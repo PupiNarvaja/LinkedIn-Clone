@@ -11,6 +11,7 @@ module.exports = {
         'linkedin-black': '#000000E6',
         'linkedin-blue': '#0A66C2',
         'linkedin-darkblue': '#004182',
+        'linkedin-red': '#CC1016',
       },
     },
   },

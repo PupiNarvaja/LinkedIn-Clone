@@ -1,1 +1,0 @@
-export const onlySpaces = (str) => str.trim().length === 0
