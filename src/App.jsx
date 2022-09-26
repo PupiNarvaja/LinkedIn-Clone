@@ -1,19 +1,30 @@
+// import { useSelector } from "react-redux";
+// import { selectUser } from "./features/userSlice";
+
 import Header from "./components/Header";
 import SideBar from "./components/SideBar";
 import Feed from "./components/Feed";
+import Login from "./components/Login";
 
-const App = () => {  
+const App = () => {
+  //const user = useSelector(selectUser);
+  const user = true;
+
   return (
     <>
       <Header />
 
-      <div className="w-full max-w-[1128px] mx-auto flex justify-center"> 
-        <SideBar />
-        <Feed />
-        {/* Widgets */}
-      </div>
+      {!user ? (
+        <Login />
+        ) : (
+          <div className="w-full max-w-[1128px] mx-auto flex justify-center">
+          <SideBar />
+          <Feed />
+          {/* Widgets */}
+        </div>
+      )}
     </>
-  )
+  );
 };
 
 export default App;

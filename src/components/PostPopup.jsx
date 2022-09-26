@@ -1,8 +1,7 @@
 import { useState } from "react";
-import { db } from "../firebase";
-import { collection, addDoc } from 'firebase/firestore/lite';
 import { onlySpaces } from "../utils/onlySpaces";
 import Loader from "../utils/loader/Loader";
+import axios from "axios";
 
 const PostPopup = ({ avatar, name, openPopup, posts }) => {
   const [post, setPost] = useState("");
@@ -10,18 +9,20 @@ const PostPopup = ({ avatar, name, openPopup, posts }) => {
 
   setTimeout(() => setIsLoading(false), 750);
 
-  const sendPost = async e => {
-    const postInfo = {
-      name: name,
-      description: "React Full-Stack developer",
-      message: post,
-      photoUrl: avatar,
-      timestamp: Date.now()
+  const sendPost = async (e) => {
+    try {
+      await axios.post("http://localhost:8080/api/posts", {
+        author: "Juancho",
+        description: "React Full-Stack developer", // Change to dinamic.
+        message: post,
+        photoUrl: "LinkToPhoto",
+        timestamp: Date.now(),
+      });
+      // --------------------------> Con redux pushear a posts.
+      openPopup(false);
+    } catch (error) {
+      console.log(error);
     }
-    await addDoc(collection(db, "posts"), postInfo)
-    // posts.push(postInfo)                 // --------------------------> Con redux pushear a posts.
-    // console.log(postInfo)
-    openPopup(false)
   };
 
   return (
@@ -100,5 +101,6 @@ export default PostPopup;
 // Autogrow textarea
 // Characters limit 3000. Excederlo tira error.
 // Barra de más opciones debajo de boton hashtag.
-// Publish post button sigue disabled cuando solo se escriben espacios.
 // Implementar onClick en div shadow del popup para descartar el mensaje. Y mostrar advertencia.
+
+//DONE Publish post button sigue disabled cuando solo se escriben espacios.

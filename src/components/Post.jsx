@@ -2,7 +2,7 @@ import BtnReaction from "./BtnReaction";
 import React from "react";
 import avatar from "../assets/avatar.png";
 
-const Post = ({ name, description, message, photoUrl }) => {
+const Post = ({ photoUrl, author, description, message, comments, timestamp }) => {
   return (
     <div className="w-full mb-2 px-4 py-3 pb-1 linkedin-border">
       <header className="w-full mb-2 flex justify-between items-center">
@@ -13,9 +13,9 @@ const Post = ({ name, description, message, photoUrl }) => {
             className="w-12 h-12 object-fit rounded-full"
           />
           <div className="ml-2 flex flex-col">
-            <h2 className="text-sm font-semibold">{name}</h2>
+            <h2 className="text-sm font-semibold">{author}</h2>
             <p className="text-xs text-linkedin-gray">{description}</p>
-            <span className="text-xs text-linkedin-gray">19hs</span>
+            <span className="text-xs text-linkedin-gray">{timestamp}</span>
           </div>
         </div>
         <button className="h-8 px-2 pb-1 text-blue-500 font-semibold rounded hover:bg-blue-100 duration-150"><strong className="text-xl">+</strong> Follow</button>
