@@ -1,5 +1,5 @@
 import HeaderOption from "./HeaderOption";
-import avatar from '../assets/avatar.png';
+import avatar from '../../assets/avatar.png';
 
 const Header = () => {
   return (

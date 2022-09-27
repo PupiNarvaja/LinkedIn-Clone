@@ -1,7 +1,7 @@
 // import { useSelector } from "react-redux";
 // import { selectUser } from "./features/userSlice";
 
-import Header from "./components/Header";
+import Header from "./components/Header/Header";
 import SideBar from "./components/SideBar";
 import Feed from "./components/Feed";
 import Login from "./components/Login";

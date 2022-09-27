@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { hasOnlySpaces, characterLimitReached } from "../utils/postValidation";
-import Loader from "../utils/loader/Loader";
+import { hasOnlySpaces, characterLimitReached } from "../../utils/postValidation";
+import Loader from "../../utils/loader/Loader";
 import axios from "axios";
 
 const PostPopup = ({ avatar, name, openPopup, closePostPopup, posts }) => {

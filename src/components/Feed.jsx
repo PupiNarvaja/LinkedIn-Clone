@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
-import ButtonNewPostOption from './ButtonNewPostOption';
-import Post from './Post';
+import ButtonNewPostOption from './NewPost/ButtonNewPostOption';
+import Post from './NewPost/Post';
 import avatar from '../assets/avatar.png';
-import PostPopup from './PostPopup';
+import PostPopup from './NewPost/PostPopup';
 import DiscardPostPopup from './NewPost/DiscardPostPopup';
 import Loader from '../utils/loader/Loader';
-import { hasOnlySpaces } from "../utils/postValidation"; // Crear index para importacion de utils. Y usar custom hook y react query.
+import { hasOnlySpaces } from "../utils/postValidation";
 
 const Feed = () => {
   const [posts, setPosts] = useState([]);

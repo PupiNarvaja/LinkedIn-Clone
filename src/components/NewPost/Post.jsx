@@ -1,6 +1,6 @@
 import BtnReaction from "./BtnReaction";
 import React from "react";
-import avatar from "../assets/avatar.png";
+import avatar from "../../assets/avatar.png";
 
 const Post = ({ photoUrl, author, description, message, comments, timestamp }) => {
   return (
