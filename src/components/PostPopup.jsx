@@ -1,14 +1,15 @@
 import { useState } from "react";
+import { hasOnlySpaces, characterLimitReached } from "../utils/postValidation";
 import Loader from "../utils/loader/Loader";
 import axios from "axios";
 
-const PostPopup = ({ avatar, name, openPopup, posts }) => {
+const PostPopup = ({ avatar, name, openPopup, closePostPopup, posts }) => {
   const [post, setPost] = useState("");
   const [isLoading, setIsLoading] = useState(true);
 
   setTimeout(() => setIsLoading(false), 750);
 
-  const sendPost = async (e) => {
+  const sendPost = async () => {
     try {
       await axios.post("http://localhost:8080/api/posts", {
         author: "Juancho",
@@ -24,18 +25,14 @@ const PostPopup = ({ avatar, name, openPopup, posts }) => {
     }
   };
 
-  const hasOnlySpaces = (string) => string.trim().length === 0;
-
-  const characterLimitReached = (string) => string.length > 3000;
-
   return (
-    <div className="w-full h-[100vh] top-0 left-0 fixed bg-[#000000BF] z-10">
-      <div className="max-w-[552px] mx-auto relative top-9 bg-white rounded-lg z-11">
+    <div className="w-[100vw] h-[100vh] top-0 left-0 fixed">
+      <div className="max-w-[552px] mx-auto relative top-9 bg-white rounded-lg z-10">
         <div className="px-6 py-4 flex justify-between items-center border-b-[0.1px] border-b-gray-200">
           <h2 className="text-xl text-linkedin-black">Create a post</h2>
           <button
             type="button"
-            onClick={() => openPopup(false)}
+            onClick={() => closePostPopup(post)}
             className="absolute right-5 my-auto p-2 rounded-full hover:bg-[#00000014] duration-150"
           >
             <svg

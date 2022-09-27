@@ -5,11 +5,14 @@ import ButtonNewPostOption from './ButtonNewPostOption';
 import Post from './Post';
 import avatar from '../assets/avatar.png';
 import PostPopup from './PostPopup';
+import DiscardPostPopup from './NewPost/DiscardPostPopup';
 import Loader from '../utils/loader/Loader';
+import { hasOnlySpaces } from "../utils/postValidation"; // Crear index para importacion de utils. Y usar custom hook y react query.
 
 const Feed = () => {
   const [posts, setPosts] = useState([]);
   const [popupOpen, setPopupOpen] = useState(false);
+  const [discardPopupOpen, setDiscardPopupOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -24,19 +27,28 @@ const Feed = () => {
     })();
   }, []);
 
-  const openPopup = () => {
+  const closePostPopup = (post) => {
+    if (!hasOnlySpaces(post)) {
+      return setDiscardPopupOpen(true);
+    }
     setPopupOpen(false);
   };
 
   return (
     <main className="mx-5 flex-[0.6]">
+      {discardPopupOpen && <DiscardPostPopup closeDiscardPopup={setDiscardPopupOpen} />}
       {popupOpen && (
-        <PostPopup
-          avatar={avatar}
-          name="Juan Manuel Narvaja"
-          openPopup={openPopup}
-          posts={posts}
-        />
+        <>
+          {/* it changes dark background depending on which popup is shown: If discard popup is rendered, dark background will also cover post popup. */}
+          <div className={`w-full h-[100vh] top-0 left-0 fixed bg-[#000000BF] ${(popupOpen && discardPopupOpen) ? "z-10" : "z-1"}`} />
+          <PostPopup
+            avatar={avatar}
+            name="Juan Manuel Narvaja"
+            closePostPopup={closePostPopup}
+            openPopup={setPopupOpen}
+            posts={posts}
+          />        
+        </>
       )}
       <div className="px-4 pt-[8px] pb-0 rounded-xl border border-gray-300 bg-white">
         <div className="flex items-center ">
@@ -78,8 +90,7 @@ const Feed = () => {
           <Loader />
         </div>
       ) : (
-        posts.map(
-          ({
+        posts.map(({
             _id,
             photoUrl,
             author,
@@ -96,10 +107,7 @@ const Feed = () => {
               message={message}
               comments={comments}
               timestamp={timestamp}
-            />
-          )
-        )
-      )}
+            />)))}
     </main>
   );
 };
