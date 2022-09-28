@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { hasOnlySpaces, characterLimitReached } from "../../utils/postValidation";
+import { hasOnlySpaces, characterLimitReached, } from "../../utils/postValidation";
 import Loader from "../../utils/loader/Loader";
 import axios from "axios";
 
@@ -85,7 +85,9 @@ const PostPopup = ({ avatar, name, openPopup, closePostPopup, posts }) => {
                   />
                   You have exceeded the maximum character limit
                 </span>
-                <span className="ml-8 py-[5px] font-semibold">-{post.length - 3000}</span>
+                <span className="ml-8 py-[5px] font-semibold">
+                  -{post.length - 3000}
+                </span>
               </div>
             ) : (
               <div className="pt-3 pr-6 pb-1 pl-4 flex justify-start">

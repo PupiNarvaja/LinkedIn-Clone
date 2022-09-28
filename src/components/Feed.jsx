@@ -1,53 +1,42 @@
-import { useEffect, useState } from 'react';
-import axios from 'axios';
-
-import ButtonNewPostOption from './NewPost/ButtonNewPostOption';
-import Post from './NewPost/Post';
-import avatar from '../assets/avatar.png';
-import PostPopup from './NewPost/PostPopup';
-import DiscardPostPopup from './NewPost/DiscardPostPopup';
-import Loader from '../utils/loader/Loader';
+import { useState } from "react";
+import ButtonNewPostOption from "./NewPost/ButtonNewPostOption";
+import Post from "./NewPost/Post";
+import avatar from "../assets/avatar.png";
+import PostPopup from "./NewPost/PostPopup";
+import DiscardPostPopup from "./NewPost/DiscardPostPopup";
+import Loader from "../utils/loader/Loader";
 import { hasOnlySpaces } from "../utils/postValidation";
+import useFetch from "../customHooks/useFetch";
 
 const Feed = () => {
-  const [posts, setPosts] = useState([]);
   const [popupOpen, setPopupOpen] = useState(false);
   const [discardPopupOpen, setDiscardPopupOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const { data } = await axios.get("http://localhost:8080/api/posts");
-        setPosts(data.reverse());
-        setIsLoading(false)
-      } catch (error) {
-        console.log(error);
-      }
-    })();
-  }, []);
+  const { data, isLoading, error } = useFetch("http://localhost:8080/api/posts", []);
 
-  const closePostPopup = (post) => {
-    if (!hasOnlySpaces(post)) {
-      return setDiscardPopupOpen(true);
-    }
-    setPopupOpen(false);
-  };
+  const closePostPopup = (post) =>
+    hasOnlySpaces(post) ? setPopupOpen(false) : setDiscardPopupOpen(true);
 
   return (
     <main className="mx-5 flex-[0.6]">
-      {discardPopupOpen && <DiscardPostPopup closeDiscardPopup={setDiscardPopupOpen} />}
+      {discardPopupOpen && (
+        <DiscardPostPopup closeDiscardPopup={setDiscardPopupOpen} />
+      )}
       {popupOpen && (
         <>
           {/* it changes dark background depending on which popup is shown: If discard popup is rendered, dark background will also cover post popup. */}
-          <div className={`w-full h-[100vh] top-0 left-0 fixed bg-[#000000BF] ${(popupOpen && discardPopupOpen) ? "z-10" : "z-1"}`} />
+          <div
+            className={`w-full h-[100vh] top-0 left-0 fixed bg-[#000000BF] ${
+              popupOpen && discardPopupOpen ? "z-10" : "z-1"
+            }`}
+          />
           <PostPopup
             avatar={avatar}
             name="Juan Manuel Narvaja"
             closePostPopup={closePostPopup}
             openPopup={setPopupOpen}
-            posts={posts}
-          />        
+            posts={data}
+          />
         </>
       )}
       <div className="px-4 pt-[8px] pb-0 rounded-xl border border-gray-300 bg-white">
@@ -90,24 +79,31 @@ const Feed = () => {
           <Loader />
         </div>
       ) : (
-        posts.map(({
-            _id,
-            photoUrl,
-            author,
-            description,
-            message,
-            comments,
-            timestamp,
-          }) => (
-            <Post
-              key={_id}
-              photoUrl={photoUrl}
-              author={author}
-              description={description}
-              message={message}
-              comments={comments}
-              timestamp={timestamp}
-            />)))}
+        (
+          data &&
+          data.map(
+            ({
+              _id,
+              photoUrl,
+              author,
+              description,
+              message,
+              comments,
+              timestamp,
+            }) => (
+              <Post
+                key={_id}
+                photoUrl={photoUrl}
+                author={author}
+                description={description}
+                message={message}
+                comments={comments}
+                timestamp={timestamp}
+              />
+            )
+          )
+        ).reverse()
+      )}
     </main>
   );
 };
