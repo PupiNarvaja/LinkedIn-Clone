@@ -2,6 +2,7 @@ import { useState } from "react";
 import { hasOnlySpaces, characterLimitReached, } from "../../utils/postValidation";
 import Loader from "../../utils/loader/Loader";
 import axios from "axios";
+import CloseButton from "../Buttons/CloseButton";
 
 const PostPopup = ({ avatar, name, openPopup, closePostPopup, posts }) => {
   const [post, setPost] = useState("");
@@ -30,24 +31,7 @@ const PostPopup = ({ avatar, name, openPopup, closePostPopup, posts }) => {
       <div className="max-w-[552px] mx-auto relative top-9 bg-white rounded-lg z-10">
         <div className="px-6 py-4 flex justify-between items-center border-b-[0.1px] border-b-gray-200">
           <h2 className="text-xl text-linkedin-black">Create a post</h2>
-          <button
-            type="button"
-            onClick={() => closePostPopup(post)}
-            className="absolute right-5 my-auto p-2 rounded-full hover:bg-[#00000014] duration-150"
-          >
-            <svg
-              className="text-[#00000099]"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              data-supported-dps="24x24"
-              fill="currentColor"
-              width="24"
-              height="24"
-              focusable="false"
-            >
-              <path d="M13.42 12L20 18.58 18.58 20 12 13.42 5.42 20 4 18.58 10.58 12 4 5.42 5.42 4 12 10.58 18.58 4 20 5.42z"></path>
-            </svg>
-          </button>
+          <CloseButton size="24" onClickFunction={() => closePostPopup(post)} classes="p-2 right-5" />
         </div>
         {isLoading ? (
           <div className="flex justify-center py-40">

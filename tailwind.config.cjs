@@ -13,6 +13,9 @@ module.exports = {
         'linkedin-darkblue': '#004182',
         'linkedin-red': '#CC1016',
       },
+      boxShadow: {
+        '2': 'inset 0 0 0 1px #0A66C2',
+      },
     },
   },
   plugins: [],

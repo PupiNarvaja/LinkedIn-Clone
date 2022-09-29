@@ -1,36 +1,31 @@
 import React from "react";
+import CloseButton from "../Buttons/CloseButton";
 
-const DiscardPostPopup = ({ closeDiscardPopup }) => {
+const DiscardPostPopup = ({ closeDiscardPopup, onDiscard }) => {
   return (
     <div className="w-full h-[100vh] top-0 left-0 absolute z-20">
       <div className="max-w-[336px] mx-auto relative top-40 bg-white rounded-lg z-30">
-        <div className="px-6 py-4 flex justify-between items-center border-b-[0.1px] border-b-gray-200">
-          <h2 className="text-xl text-linkedin-black">Save this post as a draft?</h2>
-          <button
-            type="button"
-            onClick={() => closeDiscardPopup()}
-            className="absolute right-5 my-auto p-2 rounded-full hover:bg-[#00000014] duration-150"
-          >
-            <svg
-              className="text-[#00000099]"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              data-supported-dps="24x24"
-              fill="currentColor"
-              width="24"
-              height="24"
-              focusable="false"
-            >
-              <path d="M13.42 12L20 18.58 18.58 20 12 13.42 5.42 20 4 18.58 10.58 12 4 5.42 5.42 4 12 10.58 18.58 4 20 5.42z"></path>
-            </svg>
-          </button>
+        <div className="pt-6 pr-8 pb-4 pl-4 flex justify-between items-center border-b-[0.1px] border-b-gray-200">
+          <h2 className="text-lg text-linkedin-black">Save this post as a draft?</h2>
+          <CloseButton size="20" onClickFunction={closeDiscardPopup} classes="p-[6px] right-1 top-1" />
         </div>
-        <div className="px-6 py-3 flex justify-end">
+        <div className="p-4 text-linkedin-black border-b-[0.1px] border-b-gray-200">
+          <p>
+            The post you started will be here when you return.
+          </p>
+        </div>
+        <div className="px-4 py-3 flex justify-end">
           <button
-            className="px-4 py-1 my-1 rounded-full font-semibold text-white bg-linkedin-blue hover:bg-linkedin-darkblue disabled:cursor-not-allowed disabled:text-[#0000004D] disabled:bg-[#00000014] duration-150"
-            onClick={() => console.log("closed")}
+            className="px-4 py-1 ml-2 mt-1 rounded-full font-semibold text-linkedin-blue bg-white border border-linkedin-blue hover:bg-blue-100 hover:shadow-2 duration-150"
+            onClick={onDiscard}
           >
-            Post
+            Discard
+          </button>
+          <button
+            className="px-4 py-1 ml-2 mt-1 rounded-full font-semibold text-white bg-linkedin-blue hover:bg-linkedin-darkblue duration-150"
+            onClick={() => alert("FEATURE MISSING: Save as a draft.")}
+          >
+            Save as draft
           </button>
         </div>
       </div>

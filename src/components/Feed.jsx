@@ -17,10 +17,15 @@ const Feed = () => {
   const closePostPopup = (post) =>
     hasOnlySpaces(post) ? setPopupOpen(false) : setDiscardPopupOpen(true);
 
+  const onDiscard = () => {
+    setDiscardPopupOpen(false)
+    setPopupOpen(false)
+  }
+
   return (
     <main className="mx-5 flex-[0.6]">
       {discardPopupOpen && (
-        <DiscardPostPopup closeDiscardPopup={setDiscardPopupOpen} />
+        <DiscardPostPopup closeDiscardPopup={setDiscardPopupOpen} onDiscard={onDiscard} />
       )}
       {popupOpen && (
         <>
