@@ -1,5 +1,6 @@
 import React from "react";
 import avatar from '../assets/avatar.png';
+import banner from '../assets/banner.png';
 
 const SideBar = () => {
 
@@ -16,7 +17,7 @@ const SideBar = () => {
     <aside className="min-w-[180px] h-auto flex-[0.2] rounded-xl text-center">
       <div className="pb-[10px] flex flex-col items-center border border-b-0 border-gray-300 bg-white rounded-t-xl">
         <img
-          src="https://res.cloudinary.com/this/image/upload/v1640141505/samples/transformations-builder-sample.jpg"
+          src={banner}
           alt=""
           className="w-full h-[60px] mb-[-20px] rounded-t-xl object-cover"
         />

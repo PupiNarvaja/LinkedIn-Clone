@@ -1,6 +1,8 @@
 import useFetch from "../../customHooks/useFetch";
+import Conditional from "../../utils/Conditional";
 import Loader from "../../utils/loader/Loader";
 import NewPost from "../NewPost/NewPost";
+import FeedError from "./FeedError";
 import FeedList from "./FeedList";
 
 const Feed = () => {
@@ -9,13 +11,11 @@ const Feed = () => {
   return (
     <main className="mx-5 flex-[0.6]">
       <NewPost />
-      {
-        isLoading
-        ? <Loader marginTop={8} />
-        : error
-        ? <div className="w-full p-10 bg-white border border-red-500 rounded-xl">{error.message}</div>
-        : <FeedList posts={posts} />
-      }
+      <Conditional props={[
+        isLoading, <Loader classes="mt-8" />,
+        error, <FeedError error={error} />,
+        posts, <FeedList posts={posts} />]}
+      />
     </main>
   );
 };
