@@ -3,7 +3,7 @@
 
 import Header from "./components/Header/Header";
 import SideBar from "./components/SideBar";
-import Feed from "./components/Feed";
+import Feed from "./components/Feed/Feed";
 import Login from "./components/Login";
 
 const App = () => {

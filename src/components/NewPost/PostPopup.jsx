@@ -4,7 +4,7 @@ import Loader from "../../utils/loader/Loader";
 import axios from "axios";
 import CloseButton from "../Buttons/CloseButton";
 
-const PostPopup = ({ avatar, name, openPopup, closePostPopup, posts }) => {
+const PostPopup = ({ avatar, name, openPopup, closePostPopup }) => {
   const [post, setPost] = useState("");
   const [isLoading, setIsLoading] = useState(true);
 
@@ -31,7 +31,7 @@ const PostPopup = ({ avatar, name, openPopup, closePostPopup, posts }) => {
       <div className="max-w-[552px] mx-auto relative top-9 bg-white rounded-lg z-10">
         <div className="px-6 py-4 flex justify-between items-center border-b-[0.1px] border-b-gray-200">
           <h2 className="text-xl text-linkedin-black">Create a post</h2>
-          <CloseButton size="24" onClickFunction={() => closePostPopup(post)} classes="p-2 right-5" />
+          <CloseButton size="24" onClose={() => closePostPopup(post)} classes="p-2 right-5" />
         </div>
         {isLoading ? (
           <div className="flex justify-center py-40">

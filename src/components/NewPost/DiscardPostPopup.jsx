@@ -7,7 +7,7 @@ const DiscardPostPopup = ({ closeDiscardPopup, onDiscard }) => {
       <div className="max-w-[336px] mx-auto relative top-40 bg-white rounded-lg z-30">
         <div className="pt-6 pr-8 pb-4 pl-4 flex justify-between items-center border-b-[0.1px] border-b-gray-200">
           <h2 className="text-lg text-linkedin-black">Save this post as a draft?</h2>
-          <CloseButton size="20" onClickFunction={closeDiscardPopup} classes="p-[6px] right-1 top-1" />
+          <CloseButton size="20" onClose={closeDiscardPopup} classes="p-[6px] right-1 top-1" />
         </div>
         <div className="p-4 text-linkedin-black border-b-[0.1px] border-b-gray-200">
           <p>

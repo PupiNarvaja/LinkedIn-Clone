@@ -1,31 +1,29 @@
 import { useState } from "react";
-import ButtonNewPostOption from "./NewPost/ButtonNewPostOption";
-import Post from "./NewPost/Post";
-import avatar from "../assets/avatar.png";
-import PostPopup from "./NewPost/PostPopup";
-import DiscardPostPopup from "./NewPost/DiscardPostPopup";
-import Loader from "../utils/loader/Loader";
-import { hasOnlySpaces } from "../utils/postValidation";
-import useFetch from "../customHooks/useFetch";
+import ButtonNewPostOption from "./ButtonNewPostOption";
+import avatar from "../../assets/avatar.png";
+import PostPopup from "./PostPopup";
+import DiscardPostPopup from "./DiscardPostPopup";
+import { hasOnlySpaces } from "../../utils/postValidation";
 
-const Feed = () => {
+const NewPost = () => {
   const [popupOpen, setPopupOpen] = useState(false);
   const [discardPopupOpen, setDiscardPopupOpen] = useState(false);
-
-  const { data, isLoading, error } = useFetch("http://localhost:8080/api/posts", []);
 
   const closePostPopup = (post) =>
     hasOnlySpaces(post) ? setPopupOpen(false) : setDiscardPopupOpen(true);
 
   const onDiscard = () => {
-    setDiscardPopupOpen(false)
-    setPopupOpen(false)
-  }
+    setDiscardPopupOpen(false);
+    setPopupOpen(false);
+  };
 
   return (
-    <main className="mx-5 flex-[0.6]">
+    <>
       {discardPopupOpen && (
-        <DiscardPostPopup closeDiscardPopup={setDiscardPopupOpen} onDiscard={onDiscard} />
+        <DiscardPostPopup
+          closeDiscardPopup={setDiscardPopupOpen}
+          onDiscard={onDiscard}
+        />
       )}
       {popupOpen && (
         <>
@@ -40,7 +38,6 @@ const Feed = () => {
             name="Juan Manuel Narvaja"
             closePostPopup={closePostPopup}
             openPopup={setPopupOpen}
-            posts={data}
           />
         </>
       )}
@@ -78,39 +75,8 @@ const Feed = () => {
           />
         </div>
       </div>
-
-      {isLoading ? (
-        <div className="flex justify-center mt-8">
-          <Loader />
-        </div>
-      ) : (
-        (
-          data &&
-          data.map(
-            ({
-              _id,
-              photoUrl,
-              author,
-              description,
-              message,
-              comments,
-              timestamp,
-            }) => (
-              <Post
-                key={_id}
-                photoUrl={photoUrl}
-                author={author}
-                description={description}
-                message={message}
-                comments={comments}
-                timestamp={timestamp}
-              />
-            )
-          )
-        ).reverse()
-      )}
-    </main>
+    </>
   );
 };
 
-export default Feed;
+export default NewPost;

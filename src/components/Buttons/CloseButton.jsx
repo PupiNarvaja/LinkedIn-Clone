@@ -1,10 +1,10 @@
 import React from "react";
 
-const CloseButton = ({ size, onClickFunction, ...classes }) => {
+const CloseButton = ({ size, onClose, ...classes }) => {
   return (
     <button
       type="button"
-      onClick={() => onClickFunction()}
+      onClick={() => onClose()}
       className={`absolute my-auto rounded-full hover:bg-[#00000014] duration-150 ${classes.classes}`}
     >
       <svg
@@ -24,6 +24,5 @@ const CloseButton = ({ size, onClickFunction, ...classes }) => {
 };
 
 export default CloseButton;
-
 
 //hacer button blue y follow
