@@ -15,3 +15,6 @@ const Conditional = ({ props }) => {
 };
 
 export default Conditional;
+
+// Pensar si no es mejor que la data sea el error o la data y se manej distinto:
+// <p>{!data ? "Loading..." : data}</p> Esto es más facil ya que no esta la variable error en el medio.

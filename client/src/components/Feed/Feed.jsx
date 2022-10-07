@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import useFetch from "../../customHooks/useFetch";
 import Conditional from "../../utils/Conditional";
 import Loader from "../../utils/loader/Loader";
@@ -7,6 +8,14 @@ import FeedList from "./FeedList";
 
 const Feed = () => {
   const { data: posts, isLoading, error } = useFetch("http://localhost:8080/api/posts", []);
+
+  // useEffect(() => {
+  //   fetch("http://localhost:8080/api/users")
+  //     .then((res) => res.json())
+  //     .then((res) => console.log(res))
+  // }, [])
+  // Si no hay user, que haga el fetch.
+  
 
   return (
     <main className="mx-5 flex-[0.6]">
