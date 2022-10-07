@@ -10,7 +10,7 @@ const generateTokenAndRedirect = async (req, res) => {
 
   const { id } = req.user
   const { address, admin, age, email, firstname, lastname, phone, profile, _id } = await userModel.getById(id);
-  const user = { address, admin, age, email, firstname, lastname, phone, profile, _id }; //Refactorizar.
+  const user = { address, admin, age, email, firstname, lastname, phone, profile, _id }; //Refactorizar. Maybe getPublicUserInfo
 
   res.clearCookie("token");
   res.cookie("token", token);
