@@ -41,7 +41,7 @@ const NewPost = () => {
           />
         </>
       )}
-      <div className="px-4 pt-[8px] pb-0 rounded-xl border border-gray-300 bg-white">
+      <div className="px-4 pt-[8px] pb-0 linkedin-border">
         <div className="flex items-center ">
           <img
             src={avatar}

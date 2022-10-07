@@ -14,12 +14,12 @@ const SideBar = () => {
   );
 
   return (
-    <aside className="min-w-[180px] h-auto flex-[0.2] rounded-xl text-center">
-      <div className="pb-[10px] flex flex-col items-center border border-b-0 border-gray-300 bg-white rounded-t-xl">
+    <aside className="min-w-[180px] h-auto flex-[0.2] rounded-lg text-center">
+      <div className="pb-[10px] flex flex-col items-center border border-b-0 border-gray-300 bg-white rounded-t-lg">
         <img
           src={banner}
           alt=""
-          className="w-full h-[60px] mb-[-20px] rounded-t-xl object-cover"
+          className="w-full h-[60px] mb-[-20px] rounded-t-lg object-cover"
         />
         <img
           src={avatar}
@@ -30,7 +30,7 @@ const SideBar = () => {
         <h4 className="text-gray-400 text-xs">juanmanarvaja@gmail.com</h4>
       </div>
 
-      <div className="p-[10px] mb-[10px] border border-gray-300 bg-white rounded-b-xl">
+      <div className="p-[10px] mb-[10px] border border-gray-300 bg-white rounded-b-lg">
         <div className="mt-[10px] flex justify-between">
           <p className="text-gray-400 text-xs font-semibold">Contacts</p>
           <p className="text-xs text-[#0a66c2] font-bold">51</p>
@@ -41,7 +41,7 @@ const SideBar = () => {
         </div>
       </div>
 
-      <div className="py-[10px] mt-[10px] sticky top-[76px] text-left bg-white border border-gray-300 rounded-[10px]">
+      <div className="py-[10px] mt-[10px] sticky top-[76px] text-left linkedin-border">
         <p className="pl-3 text-xs">Recent</p>
         <ul>
           {recentItems("reactjs")}

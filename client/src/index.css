@@ -4,6 +4,6 @@
 
 @layer components {
   .linkedin-border {
-    @apply bg-white border border-gray-300 rounded-xl;
+    @apply bg-white border border-gray-300 rounded-lg;
   }
 }
