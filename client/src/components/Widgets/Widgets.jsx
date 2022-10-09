@@ -1,13 +1,23 @@
-import React from 'react'
+import React from "react";
+import FeedSugestionOption from "./FeedSugestionOption";
 
+// Faltan estilos.
 const Widgets = () => {
   return (
-    <div className="mx-5 flex-[0.2] bg-white">
+    <div className="h-fit p-3 flex-[0.2916] linkedin-border">
       <div>
-        <h2>Add to your feed</h2>
+        <h2 className="font-semibold">Add to your feed</h2>
       </div>
+      <ul>
+        <FeedSugestionOption />
+        <FeedSugestionOption />
+        <FeedSugestionOption />
+      </ul>
+      <button>
+        View all recommendations ➜
+      </button>
     </div>
-  )
-}
+  );
+};
 
-export default Widgets
+export default Widgets;

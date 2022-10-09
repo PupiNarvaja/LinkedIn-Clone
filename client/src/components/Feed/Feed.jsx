@@ -16,9 +16,9 @@ const Feed = () => {
   // }, [])
   // Si no hay user, que haga el fetch.
   
-
+// Usar Grid
   return (
-    <main className="mx-5 flex-[0.6]">
+    <main className="mx-6 flex-[0.5]">
       <NewPost />
       <Conditional props={[
         isLoading, <Loader classes="mt-8" />,
