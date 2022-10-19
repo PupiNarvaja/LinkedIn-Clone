@@ -6,16 +6,16 @@ const logger = require("../log");
 const userModel = ModelFactory.getModel("user");
 
 module.exports = (passport) => {
-  const authenticateUser = async (email, password, done) => {
+  const authenticateUser = async (req, email, password, done) => {
     try {
       if (!(await userModel.existsByEmail(email))) {
         logger.error("Requested user does not exist.");
-        return done(null, false);
+        return done(null, false, { message: "Requested user does not exist." });
       }
 
       if (!(await userModel.isPasswordValid(email, password))) {
         logger.error("Wrong password!");
-        return done(null, false);
+        return done(null, false, { message: "Wrong password." });
       }
 
       const user = await userModel.getUserByEmail(email);
@@ -64,12 +64,13 @@ module.exports = (passport) => {
   passport.use("login", new LocalStrategy({
     usernameField: "email",
     passwordField: "password",
+    passReqToCallback: true,
   }, authenticateUser));
 
   passport.use("register", new LocalStrategy({
     usernameField: "email",
     passwordField: "password",
-    passReqToCallback: true
+    passReqToCallback: true,
   }, registerUser));
 
   passport.serializeUser((user, done) => done(null, user.id));

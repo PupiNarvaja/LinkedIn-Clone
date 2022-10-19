@@ -4,9 +4,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectUser } from "./redux/features/userSlice";
 
-import Header from "./components/Header/Header";
-import SideBar from "./components/SideBar";
-import Feed from "./components/Feed/Feed";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import MainContent from "./components/MainContent/MainContent";

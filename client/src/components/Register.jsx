@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Link, Navigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
+import { userActions } from "../redux/actions/user-actions";
 
 const Register = () => {
   const [firstname, setFirstname] = useState("");
@@ -15,7 +17,12 @@ const Register = () => {
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    
+
+    // const dispatch = useDispatch();
+    // const user = useSelector((state) => state.userReducer.user);
+
+    // dispatch(userActions.formSubmittionStatus(true));
+
     if (email === "" || password === "") { // Agregar fields.
       return alert("Empty fields");
     }

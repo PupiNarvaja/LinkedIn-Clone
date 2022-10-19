@@ -6,12 +6,13 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [redirect, setRedirect] = useState(false);
-  // Crear error para mostrar. Guardar el mail en un redux por si contra equivocada, poder poner el mail de vuelta.
+  const [error, setError] = useState(false);
+  const [errorMsg, setErrorMsg] = useState(""); // Refactor. 2 error states.
 
   const handleLogin = async (e) => {
     e.preventDefault();
     
-    if (email === "" || password === "") {
+    if (email === "" || password === "") { // Refactor.
       return alert("Empty fields");
     }
 
@@ -19,14 +20,15 @@ const Login = () => {
     const config = { headers: { "content-type": "application/json" } };
 
     try {
-      const res = await axios.post("http://localhost:8080/login", userData, config);
-      console.log(res.data);      //  Debo recibir al usuario y su info. Deshabilitar botones y eso.
+      await axios.post("http://localhost:8080/login", userData, config);
       setRedirect(true);
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      setError(true);
+      setErrorMsg(err.response.data);
     }
   };
 
+  // If user logs in correctly, it redirects to "/feed".
   if (redirect) {
     return <Navigate replace to="/feed" />;
   }
@@ -52,9 +54,14 @@ const Login = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <button type="submit">
-          Sign in
-        </button>
+
+        {error && (
+          <div className="flex justify-center">
+            <span className="text-red-600">{errorMsg}</span>
+          </div>
+        )}
+
+        <button type="submit">Sign in</button>
       </form>
       <p>
         Not a member?
