@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, Navigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { userActions } from "../redux/actions/user-actions";
 import axios from "axios";
 
 const Login = () => {
@@ -8,6 +10,8 @@ const Login = () => {
   const [redirect, setRedirect] = useState(false);
   const [error, setError] = useState(false);
   const [errorMsg, setErrorMsg] = useState(""); // Refactor. 2 error states.
+
+  const dispatch = useDispatch();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -20,11 +24,16 @@ const Login = () => {
     const config = { headers: { "content-type": "application/json" } };
 
     try {
-      await axios.post("http://localhost:8080/login", userData, config);
+      const res = await axios.post("http://localhost:8080/login", userData, config);
+      const user = res.data;
+      
+      dispatch(userActions.setLogin(user));
       setRedirect(true);
     } catch (err) {
       setError(true);
-      setErrorMsg(err.response.data);
+      if (err.response.data) {
+        setErrorMsg(err.response.data); //Complete validation.
+      }
     }
   };
 

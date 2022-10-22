@@ -1,6 +1,6 @@
 import { userTypes } from "../types/user-types";
 
-const { LOGIN, ADD_USER, UPDATE_USER, UPDATE_PROFILE_PICTURE, FORM_SUBMITION_STATUS } = userTypes;
+const { LOGIN } = userTypes;
 
 const initialState = {
   user: {
@@ -12,7 +12,6 @@ const initialState = {
     address: "",
     profile: "",
   },
-  formSubmitted: false,
 };
 
 const userReducer = (state = initialState, action) => {
@@ -20,33 +19,7 @@ const userReducer = (state = initialState, action) => {
     case LOGIN:
       return {
         ...state,
-        user: action.payload.user,
-        formSubmitted: false, // after update user formsubmition reset
-      };
-    case ADD_USER:
-      return {
-        ...state,
-        user: action.payload.user,
-        formSubmitted: false, // after update user formsubmition reset
-      };
-    case UPDATE_USER:
-      return {
-        ...state,
-        user: action.payload.user,
-        formSubmitted: false, // after update user formsubmition reset
-      };
-    case UPDATE_PROFILE_PICTURE:
-      return {
-        ...state,
-        user: {
-          ...state.profile,
-          profileImage: action.payload.image,
-        },
-      };
-    case FORM_SUBMITION_STATUS:
-      return {
-        ...state,
-        formSubmitted: action.payload.status,
+        user: action.payload,
       };
     default:
       return state;

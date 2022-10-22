@@ -4,13 +4,15 @@ import thunk from 'redux-thunk';
 import userReducer from './reducers/user-reducer';
 
 const rootReducer = combineReducers({
-  user: userReducer,
+  userReducer,
 });
+
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const store = () => {
   return createStore(
     rootReducer,
-    compose(applyMiddleware(thunk))
+    composeEnhancers(applyMiddleware(thunk))
   );
 };
 
