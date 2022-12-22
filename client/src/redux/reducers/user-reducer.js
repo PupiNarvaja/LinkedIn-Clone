@@ -3,15 +3,7 @@ import { userTypes } from "../types/user-types";
 const { LOGIN } = userTypes;
 
 const initialState = {
-  user: {
-    firstname: "",
-    lastname: "",
-    phone: "",
-    age: "",
-    email: "",
-    address: "",
-    profile: "",
-  },
+  user: null
 };
 
 const userReducer = (state = initialState, action) => {

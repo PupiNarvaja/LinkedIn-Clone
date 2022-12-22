@@ -4,7 +4,6 @@ const logger = require("../log");
 module.exports = (req, res, next) => {
   const cookies = req.cookies;
 
-  console.log(req.user)
   if (!cookies.token) {
     if (req.session) {
       console.log("session destroyed.")

@@ -1,27 +1,20 @@
 import { useDispatch } from "react-redux";
 import { userActions } from "../redux/actions/user-actions";
-import axios from "axios";
+import useFetch from "./useFetch";
 
-const useSetUser = async () => {
+const useSetUser = () => {
+  // If user refreshes the site, it's info will be requested.
+  // If an error occurs or session expires, it will redirect to "/Login".
+
   const dispatch = useDispatch();
-
-  const config = { headers: { "content-type": "application/json" } };
-
-  try {
-    const res = await axios.get("http://localhost:8080/api/users", {}, config);
-
-    if (res.status === 204) {
-      dispatch(userActions.setLogin(user)); //CREAR FUNCION DISPATCH PARA RESETEAR EL STATE.
-      return false;
-    }
-
-    const user = res.data;
-    dispatch(userActions.setLogin(user));
-    return true;
-  } catch (error) {
-    console.log(error);
-    return false;
+  
+  const { data: user, error, status } = useFetch("http://localhost:8080/api/users", null);
+  
+  if (error || status === 401) {
+    return dispatch(userActions.setLogin(null));
   }
+  
+  dispatch(userActions.setLogin(user));
 }
 
 export default useSetUser;

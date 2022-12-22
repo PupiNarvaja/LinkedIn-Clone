@@ -2,12 +2,16 @@ import Header from "../Header/Header";
 import SideBar from "../SideBar";
 import Feed from "../Feed/Feed";
 import Widgets from "../Widgets/Widgets";
+import useSetUser from "../../customHooks/useSetUser";
 
 const MainContent = () => {
+
+  useSetUser();
+  
   return (
     <>
       <Header />
-      <div className="w-full max-w-[1128px] mt-7 mx-auto flex justify-center">
+      <div className="w-full max-w-[1128px] mt-6 mx-auto flex justify-center">
         <SideBar />
         <Feed />
         <Widgets />
