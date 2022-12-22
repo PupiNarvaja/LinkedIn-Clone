@@ -1,22 +1,18 @@
-import { useEffect } from "react";
 import { Navigate } from "react-router-dom";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { selectUser } from "./redux/features/userSlice";
 
 import Login from "./components/Login";
-import Register from "./components/Register";
+import Register from "./components/Register/Register";
 import MainContent from "./components/MainContent/MainContent";
+import useSetUser from "./customHooks/useSetUser";
 
 const App = () => {
-  // const user = useSelector(selectUser);
-
-  // useEffect(() => {
-
-  //   return () => {
-  //     second
-  //   }
-  // }, [])
+  // If user refreshes the site, it's info will be requested.
+  // If an error occurs, it will redirect to "/Login".
+  const user = useSetUser();
+  if (!user) {
+    return <Navigate replace to="/login" /> // ESTA RECIBIENDO UN HTML NO SE PORQUE. VERIFICAR RUTA DE API/USERS.
+  }
 
   return (
     <BrowserRouter>
