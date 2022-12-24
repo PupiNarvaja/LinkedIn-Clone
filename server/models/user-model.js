@@ -9,6 +9,7 @@ class UserModel extends BaseModel {
       firstname: { type: String, required: true },
       lastname: { type: String, required: true },
       password: { type: String, required: true },
+      description: { type: String, required: true },
       age: { type: Number, required: true },
       address: { type: String, required: true },
       phone: { type: Number, required: true },
@@ -24,9 +25,11 @@ class UserModel extends BaseModel {
 
     return data.map((user) => ({
       id: user._id.toString(),
-      name: `${user.firstname} ${user.lastname}`,
+      firstname: user.firstname,
+      lastname:user.lastname,
       email: user.email,
-      phone: user.phone,
+      description: user.description,
+      profile: user.profile,
       // address: user.address,
     }));
   }

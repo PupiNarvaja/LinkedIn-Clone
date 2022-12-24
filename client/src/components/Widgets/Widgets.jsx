@@ -1,5 +1,5 @@
 import React from "react";
-import FeedSugestionOption from "./FeedSugestionOption";
+import FeedSuggestionOptionContainer from "./FeedSuggestionOption/FeedSuggestionOptionContainer";
 
 // Faltan estilos.
 const Widgets = () => {
@@ -9,9 +9,7 @@ const Widgets = () => {
         <h2 className="font-semibold">Add to your feed</h2>
       </div>
       <ul>
-        <FeedSugestionOption />
-        <FeedSugestionOption />
-        <FeedSugestionOption />
+        <FeedSuggestionOptionContainer />
       </ul>
       <button>
         View all recommendations ➜

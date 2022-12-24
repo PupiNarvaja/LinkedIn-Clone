@@ -1,8 +1,8 @@
-import React from "react";
-import avatar from '../assets/avatar.png';
 import banner from '../assets/banner.png';
+import { useSelector } from 'react-redux'
 
 const SideBar = () => {
+  const user = useSelector((state) => state.userReducer.user);
 
   const recentItems = (topic) => (
     <li className="duration-150 hover:bg-neutral-200">
@@ -22,12 +22,12 @@ const SideBar = () => {
           className="w-full h-[60px] rounded-t-lg object-cover"
         />
         <img
-          src={avatar}
+          src={user?.profile}
           alt=""
           className=" w-[72px] h-[72px] mt-[-38px] mb-4 rounded-full border-2 border-solid border-white"
         />
-        <h2 className="text-md font-semibold">Juan Manuel Narvaja</h2>
-        <h4 className="text-gray-400 text-xs">juanmanarvaja@gmail.com</h4>
+        <h2 className="text-md font-semibold">{user?.firstname} {user?.lastname}</h2>
+        <h4 className="text-gray-400 text-xs">{user?.email}</h4>
       </div>
 
       <div className="px-[10px] py-3 border border-b-0 border-gray-300 bg-white">
@@ -60,6 +60,7 @@ const SideBar = () => {
 
 export default SideBar;
 
+// Crear el skeleton hasta que carguen los datos del user.
 
 // 1128
 // 960

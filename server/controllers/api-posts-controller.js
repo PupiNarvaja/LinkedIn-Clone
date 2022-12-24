@@ -13,9 +13,10 @@ const getPosts = async (req, res) => {
 
 const postPost = async (req, res) => {
   const post = req.body;
+  const { id } = req.user;
 
   try {
-    const data = await postModel.postPost(post);
+    const data = await postModel.postPost(post, id);
     res.status(201).send(data);
   } catch (error) {
     logger.error(error);

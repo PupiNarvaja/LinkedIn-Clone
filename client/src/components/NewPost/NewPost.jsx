@@ -4,10 +4,13 @@ import avatar from "../../assets/avatar.png";
 import PostPopup from "./PostPopup";
 import DiscardPostPopup from "./DiscardPostPopup";
 import { hasOnlySpaces } from "../../utils/postValidation";
+import { useSelector } from "react-redux";
 
 const NewPost = () => {
   const [popupOpen, setPopupOpen] = useState(false);
   const [discardPopupOpen, setDiscardPopupOpen] = useState(false);
+
+  const user = useSelector((state) => state.userReducer.user);
 
   const closePostPopup = (post) =>
     hasOnlySpaces(post) ? setPopupOpen(false) : setDiscardPopupOpen(true);
@@ -34,8 +37,6 @@ const NewPost = () => {
             }`}
           />
           <PostPopup
-            avatar={avatar}
-            name="Juan Manuel Narvaja"
             closePostPopup={closePostPopup}
             openPopup={setPopupOpen}
           />
@@ -44,8 +45,8 @@ const NewPost = () => {
       <div className="px-4 pt-[8px] pb-0 linkedin-border">
         <div className="flex items-center ">
           <img
-            src={avatar}
-            alt=""
+            src={user?.profile}
+            alt={user && `${user.firstname} ${user.lastname}`}
             className="w-12 h-12 mr-2 object-contain rounded-full"
           />
           <button

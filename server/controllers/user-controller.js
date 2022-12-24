@@ -11,8 +11,8 @@ const getUserInfo = async (req, res) => {
   const { id } = req.user;
 
   try {
-    const { address, admin, age, email, firstname, lastname, phone, profile, _id } = await userModel.getById(id);
-    const user = { address, admin, age, email, firstname, lastname, phone, profile, _id }; //Refactorizar.
+    const { address, admin, age, email, firstname, lastname, description, phone, profile, _id } = await userModel.getById(id);
+    const user = { address, admin, age, email, firstname, lastname, description, phone, profile, _id }; //Refactorizar.
     res.send(user);
   } catch (error) {
     logger.error(error);

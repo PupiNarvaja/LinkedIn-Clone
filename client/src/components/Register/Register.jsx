@@ -12,6 +12,7 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [age, setAge] = useState(null);
+  const [description, setDescription] = useState("");
   const [address, setAddress] = useState("");
   const [phone, setPhone] = useState(null);
   const [profile, setProfile] = useState("");
@@ -36,6 +37,7 @@ const Register = () => {
       firstname,
       lastname,
       password,
+      description,
       age,
       address,
       phone,
@@ -53,7 +55,7 @@ const Register = () => {
   };
 
   if (redirect) {
-    return <Navigate replace to="/feed" />;
+    return <Navigate replace to="/feed" />; //Chequear si anda o es inutil.
   }
 
   return (
@@ -78,6 +80,7 @@ const Register = () => {
           </div>
           <RegisterInput label="password" value={password} type={showPassword ? "text" : "password"} setter={setPassword} />
           <RegisterInput label="age" value={age} type="number" setter={setAge} />
+          <RegisterInput label="description" value={description} type="text" setter={setDescription} />
           <RegisterInput label="address" value={address} type="text" setter={setAddress} />
           <RegisterInput label="phone" value={phone} type="tel" setter={setPhone} />
           <RegisterInput label="profile" value={profile} type="text" setter={setProfile} />

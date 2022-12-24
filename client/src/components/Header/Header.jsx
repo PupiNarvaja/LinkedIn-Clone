@@ -1,7 +1,10 @@
 import HeaderOption from "./HeaderOption";
 import avatar from '../../assets/avatar.png';
+import { useSelector } from "react-redux";
 
 const Header = () => {
+  const user = useSelector((state) => state.userReducer.user);
+
   return (
     <header className="w-full h-[53px] sticky top-0 border-b-[0.1px] bg-white border-gray-200 z-9">
       <div className="h-full max-w-[1128px] mx-auto flex justify-between">
@@ -26,10 +29,10 @@ const Header = () => {
         <div className="flex items-center justify-evenly">
           <HeaderOption icon="https://img.icons8.com/material/24/737373/home-page.png" title="Home" />
           <HeaderOption icon="https://img.icons8.com/fluency-systems-filled/24/737373/user-group-man-man.png" title="My Network" />
-          <HeaderOption icon="https://img.icons8.com/material/24/737373/briefcase--v1.png" title="jobs" />
-          <HeaderOption icon="https://img.icons8.com/fluency-systems-filled/24/737373/filled-speech-bubble-with-dots.png" title="messages" />
-          <HeaderOption icon="https://img.icons8.com/glyph-neue/24/737373/appointment-reminders.png" title="notifications" />
-          <HeaderOption avatar={avatar} title="me" />
+          <HeaderOption icon="https://img.icons8.com/material/24/737373/briefcase--v1.png" title="Jobs" />
+          <HeaderOption icon="https://img.icons8.com/fluency-systems-filled/24/737373/filled-speech-bubble-with-dots.png" title="Messaging" />
+          <HeaderOption icon="https://img.icons8.com/glyph-neue/24/737373/appointment-reminders.png" title="Notifications" />
+          <HeaderOption avatar={user?.profile} title="Me" />
         </div>
       </div>
     </header>

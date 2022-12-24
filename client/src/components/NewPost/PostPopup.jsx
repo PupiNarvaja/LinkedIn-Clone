@@ -3,22 +3,19 @@ import { hasOnlySpaces, characterLimitReached, } from "../../utils/postValidatio
 import Loader from "../../utils/loader/Loader";
 import axios from "axios";
 import CloseButton from "../Buttons/CloseButton";
+import { useSelector } from "react-redux";
 
-const PostPopup = ({ avatar, name, openPopup, closePostPopup }) => {
+const PostPopup = ({ openPopup, closePostPopup }) => {
   const [post, setPost] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+
+  const user = useSelector((state) => state.userReducer.user);
 
   setTimeout(() => setIsLoading(false), 750);
 
   const sendPost = async () => {
     try {
-      await axios.post("http://localhost:8080/api/posts", {
-        author: "Juancho",
-        description: "React Full-Stack developer", // Change to dinamic.
-        message: post.trim(),
-        photoUrl: "LinkToPhoto",
-        timestamp: Date.now(),
-      });
+      await axios.post("http://localhost:8080/api/posts", { message: post.trim() });
       // --------------------------> Con redux pushear a posts.
       openPopup(false);
     } catch (error) {
@@ -40,9 +37,9 @@ const PostPopup = ({ avatar, name, openPopup, closePostPopup }) => {
         ) : (
           <>
             <div className="px-6 py-3 flex items-end">
-              <img src={avatar} alt="" className="w-12 h-12 rounded-full" />
+              <img src={user?.profile} alt="" className="w-12 h-12 rounded-full" />
               <div className="ml-2 flex flex-col">
-                <span className="font-semibold">{name}</span>
+                <span className="font-semibold">{`${user?.firstname} ${user?.lastname}`}</span>
                 <button className="w-fit px-3 py-[5px] font-semibold border border-linkedin-gray rounded-full text-[#00000099] text-sm">
                   Anyone
                 </button>

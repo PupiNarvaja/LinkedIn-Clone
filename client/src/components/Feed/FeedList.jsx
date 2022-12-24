@@ -2,10 +2,10 @@ import React from "react";
 import Post from "../Post/Post";
 
 const FeedList = ({ posts }) => {
-  return posts.map(({ _id, photoUrl, author, description, message, comments, timestamp }) => (
+  return posts.map(({ _id, profile, author, description, message, comments, timestamp }) => (
     <Post
       key={_id}
-      photoUrl={photoUrl}
+      profile={profile}
       author={author}
       description={description}
       message={message}
@@ -16,3 +16,5 @@ const FeedList = ({ posts }) => {
 };
 
 export default FeedList;
+
+// El reverse debería venir de la Data Base mejor.
