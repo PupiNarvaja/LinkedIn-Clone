@@ -5,7 +5,7 @@ import Loader from "../../../utils/loader/Loader";
 import FeedSuggestionOptionList from "./FeedSuggestionOptionList";
 
 const FeedSuggestionOptionContainer = () => {
-  const { data: suggestedUsers, isLoading, error } = useFetch("http://localhost:8080/api/users/all", []);
+  const { data: suggestedUsers, isLoading, error } = useFetch("http://localhost:8080/api/users/suggestion", []);
 
   return (
     <Conditional props={[

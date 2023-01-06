@@ -12,9 +12,7 @@ const FeedList = ({ posts }) => {
       comments={comments}
       timestamp={timestamp}
     />
-  )).reverse()
+  ))
 };
 
 export default FeedList;
-
-// El reverse debería venir de la Data Base mejor.

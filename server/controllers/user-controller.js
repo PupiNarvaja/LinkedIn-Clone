@@ -30,7 +30,20 @@ const getAllUsers = async (req, res) => {
   }
 };
 
+const getSuggestedUsers = async (req, res) => {
+  const { id } = req.user;
+  
+  try {
+    const users = await userModel.getSuggestedUsers(id);
+    res.send(users);
+  } catch (error) {
+    logger.error(error);
+    res.status(500).send({ error: error.message });
+  }
+}
+
 module.exports = {
   getUserInfo,
   getAllUsers,
+  getSuggestedUsers,
 };

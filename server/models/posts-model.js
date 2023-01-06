@@ -14,7 +14,8 @@ class PostModel {
   }
 
   async getPosts() {
-    const posts = await this.model.find();
+    const sort = {timestamp: -1};
+    const posts = await this.model.find().sort(sort);
 
     const completePosts = await Promise.all(posts.map(async (post) => {
       const { profile, firstname, lastname, description } = await userModel.getById(post.authorId);

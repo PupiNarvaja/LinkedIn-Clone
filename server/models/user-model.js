@@ -34,6 +34,24 @@ class UserModel extends BaseModel {
     }));
   }
 
+  async getSuggestedUsers(userId) {
+    // All users except the one requesting the suggested users.
+    // Future refactor: All users except the one requesting and those following already.
+    const query = { _id: { $ne: userId } };
+    const limit = 3;
+    const data = await this.model.find(query).limit(limit).lean();
+
+    return data.map((user) => ({
+      id: user._id.toString(),
+      firstname: user.firstname,
+      lastname:user.lastname,
+      email: user.email,
+      description: user.description,
+      profile: user.profile,
+    }));
+  }
+
+
   async saveUser(obj) {
     obj.password = await bcrypt.hash(obj.password, 10);
     return await this.model.create(obj);
