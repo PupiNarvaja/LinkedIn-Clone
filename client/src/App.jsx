@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./components/Login";
 import Register from "./components/Register/Register";
 import MainContent from "./components/MainContent/MainContent";
+import Profile from "./components/Profile/Profile";
 
 const App = () => {
   return (
@@ -16,6 +17,8 @@ const App = () => {
         <Route path="/login" exact element={ <Login /> } />
 
         <Route path="/register" exact element={ <Register /> } />
+
+        <Route path="/in/:user" exact element={ <Profile /> } />
       </Routes>
     </BrowserRouter>
   );

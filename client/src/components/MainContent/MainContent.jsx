@@ -11,7 +11,7 @@ const MainContent = () => {
   return (
     <>
       <Header />
-      <div className="w-full max-w-[1128px] mt-6 mx-auto flex justify-center">
+        <div className="w-full max-w-[1128px] mt-6 mx-auto flex justify-center">
         <SideBar />
         <Feed />
         <Widgets />

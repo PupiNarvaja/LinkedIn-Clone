@@ -1,6 +1,6 @@
 import HeaderOption from "./HeaderOption";
-import avatar from '../../assets/avatar.png';
 import { useSelector } from "react-redux";
+import HeaderAvatar from "./HeaderAvatar";
 
 const Header = () => {
   const user = useSelector((state) => state.userReducer.user);
@@ -32,7 +32,7 @@ const Header = () => {
           <HeaderOption icon="https://img.icons8.com/material/24/737373/briefcase--v1.png" title="Jobs" />
           <HeaderOption icon="https://img.icons8.com/fluency-systems-filled/24/737373/filled-speech-bubble-with-dots.png" title="Messaging" />
           <HeaderOption icon="https://img.icons8.com/glyph-neue/24/737373/appointment-reminders.png" title="Notifications" />
-          <HeaderOption avatar={user?.profile} title="Me" />
+          <HeaderAvatar avatar={user?.profile} url={user?.url} />
         </div>
       </div>
     </header>

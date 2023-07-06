@@ -11,8 +11,8 @@ const getUserInfo = async (req, res) => {
   const { id } = req.user;
 
   try {
-    const { address, admin, age, email, firstname, lastname, description, phone, profile, _id } = await userModel.getById(id);
-    const user = { address, admin, age, email, firstname, lastname, description, phone, profile, _id }; //Refactorizar.
+    const { address, admin, age, email, firstname, lastname, description, phone, profile, url, _id } = await userModel.getById(id);
+    const user = { address, admin, age, email, firstname, lastname, description, phone, profile, url, _id }; //Refactorizar.
     res.send(user);
   } catch (error) {
     logger.error(error);
@@ -42,8 +42,27 @@ const getSuggestedUsers = async (req, res) => {
   }
 }
 
+const getUserByUrl = async (req, res) => {
+  const url = req.params.user;
+
+  try {
+    const user = await userModel.getUserByUrl(url);
+    console.log("user", user)
+
+    if (!user) {
+      return res.status(404).send({ error: `No user found for url: "${url}"` });
+    }
+
+    res.send(user);
+  } catch (error) {
+    logger.error(error);
+    res.status(500).send({ error: error.message });
+  }
+}
+
 module.exports = {
   getUserInfo,
   getAllUsers,
   getSuggestedUsers,
+  getUserByUrl
 };

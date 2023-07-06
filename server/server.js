@@ -62,6 +62,8 @@
 
     app.use("/feed", universalRouter);
 
+    app.use("/in/:user", universalRouter);
+
     app.use("/api/posts", postsRouter);
 
     app.use("/login", loginRouter);

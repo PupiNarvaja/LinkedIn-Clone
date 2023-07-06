@@ -9,7 +9,7 @@ const FeedSuggestionOptionContainer = () => {
 
   return (
     <Conditional props={[
-      isLoading, <Loader classes="mt-8" />,
+      isLoading, <div className="mt-8"><Loader /></div>,
       error, <h2 className="text-red text-2xl">ERROR</h2>,
       suggestedUsers, <FeedSuggestionOptionList suggestedUsers={suggestedUsers} />]}
     />

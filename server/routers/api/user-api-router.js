@@ -11,4 +11,6 @@ router.get("/all", UserController.getAllUsers);
 
 router.get("/suggestion", UserController.getSuggestedUsers);
 
+router.get("/:user", UserController.getUserByUrl);
+
 module.exports = router;

@@ -1,8 +1,8 @@
 import "./Loader.css";
 
-const Loader = ({ classes }) => {
+const Loader = () => {
   return (
-    <div className={`flex justify-center ${classes}`}>
+    <div className={`flex justify-center`}>
       <div className="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
     </div>
   )

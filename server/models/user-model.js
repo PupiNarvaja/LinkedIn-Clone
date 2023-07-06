@@ -14,6 +14,7 @@ class UserModel extends BaseModel {
       address: { type: String, required: true },
       phone: { type: Number, required: true },
       profile: { type: String, required: true },
+      url: { type: String, required: true },
       admin: { type: Boolean, default: false, required: true },
     });
 
@@ -30,7 +31,7 @@ class UserModel extends BaseModel {
       email: user.email,
       description: user.description,
       profile: user.profile,
-      // address: user.address,
+      url: user.url,
     }));
   }
 
@@ -48,13 +49,14 @@ class UserModel extends BaseModel {
       email: user.email,
       description: user.description,
       profile: user.profile,
+      url: user.url,
     }));
   }
 
-
-  async saveUser(obj) {
-    obj.password = await bcrypt.hash(obj.password, 10);
-    return await this.model.create(obj);
+  async saveUser(user) {
+    user.password = await bcrypt.hash(user.password, 10);
+    user.url = `${user.firstname}-${user.lastname}`;
+    return await this.model.create(user);
   }
 
   async existsByEmail(email) {
@@ -69,6 +71,23 @@ class UserModel extends BaseModel {
       lastname: user.lastname,
       name: `${user.firstname} ${user.lastname}`,
       email: user.email,
+    };
+  }
+
+  async getUserByUrl(url) {
+    const user = await this.model.findOne({ url }).lean();
+    
+    if (!user) {
+      return null
+    }
+    
+    return {
+      id: user._id,
+      firstname: user.firstname,
+      lastname: user.lastname,
+      name: `${user.firstname} ${user.lastname}`,
+      email: user.email,
+      url: user.url,
     };
   }
 

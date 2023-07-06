@@ -8,6 +8,7 @@ module.exports = {
     extend: {
       colors: {
         'linkedin-gray': '#00000099',
+        'linkedin-lightgray': '#00000014',
         'linkedin-black': '#000000E6',
         'linkedin-blue': '#0A66C2',
         'linkedin-darkblue': '#004182',
@@ -16,6 +17,7 @@ module.exports = {
       boxShadow: {
         '2': 'inset 0 0 0 1px #0A66C2',
         'input-shadow': '0 0 0 1px #0073b1',
+        'grey-input-shadow': 'inset 0 0 0 1px #00000099',
       },
     },
   },

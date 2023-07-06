@@ -20,8 +20,11 @@ const Feed = () => {
   return (
     <main className="mx-6 flex-[0.5]">
       <NewPost />
+      <button className="w-full h-4 my-2">
+        <hr className="w-full border-linkedin-lightgray"></hr>
+      </button>
       <Conditional props={[
-        isLoading, <Loader classes="mt-8" />,
+        isLoading, <div className="mt-8"><Loader /></div>,
         error, <FeedError error={error} />,
         posts, <FeedList posts={posts} />]}
       />
