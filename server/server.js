@@ -1,3 +1,5 @@
+const userModel = require("./models/user-model");
+
 (async () => {
   require("dotenv").config();
   const express = require("express");
@@ -9,6 +11,7 @@
   const compression = require("compression");
   const passport = require("passport");
   const path = require("path");
+  const multer = require("multer");
 
   const app = express();
   const initializePassport = require("./passport/local");
@@ -54,8 +57,32 @@
     app.use(passport.initialize());
     app.use(passport.session());
 
-    app.use("/assets/", express.static(path.join(__dirname, "../client/dist/assets")))
-    app.use("/static/", express.static(path.join(__dirname, "../client/dist")))
+    app.use("/assets/", express.static(path.join(__dirname, "../client/dist/assets")));
+    app.use("/static/", express.static(path.join(__dirname, "../client/dist")));
+    app.use("/assets/", express.static(path.join(__dirname, "/assets")));
+
+    // Multer
+    const MIMETYPES = ["image/jpeg", "image/pdf", "image/png"];
+
+    // const multerUpload = multer({
+    //   storage: multer.diskStorage({
+    //     destination: path.join(__dirname, "../client/src/assets"),
+    //     filename: (req, file, cb) => {
+    //       const fileExtension = path.extname(file.originalname);
+    //       const FILENAME = file.originalname.split(fileExtension)[0];
+
+    //       cb(null, `${FILENAME}-${Date.now()}${fileExtension}`);
+    //     }
+    //   }),
+    //   fileFilter: (req, file, cb) => {
+    //     if (MIMETYPES.includes(file.mimetype)) {
+    //       cb(null, true);
+    //     } else {
+    //       cb(new Error(`Solamente ${MIMETYPES.join("")} están permitidos.`));
+    //     }
+    //   },
+    //   limits: { fieldSize: 25000000 }
+    // });
 
     // Routes
     app.use("/", universalRouter);
@@ -74,9 +101,15 @@
 
     app.use("/api/users", userRouter);
 
+    app.post("/upload", (req, res) => {
+      userModel.updateProfilePicture(req, res);
+
+      res.sendStatus(200);
+    });
+
     // Server listening
     app.listen(PORT, () => logger.info(`🚀 Server online. Running on port: ${PORT}`));
   } catch (error) {
-    logger.error("Error on mongo.", error);
+    logger.error("Error on MongoDB.", error);
   }
 })();
