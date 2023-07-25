@@ -4,6 +4,7 @@ const bcrypt = require("bcrypt");
 const path = require("path");
 const fs = require("fs");
 const BaseModel = require("./base-model");
+const logger = require("../log/winston");
 
 class UserModel extends BaseModel {
   constructor() {
@@ -108,15 +109,12 @@ class UserModel extends BaseModel {
     const multerUpload = multer({
       storage: multer.diskStorage({
         destination: (req, file, cb) => {
-          cb(null, "../server/assets");
+          cb(null, "../server/assets")
         },
         filename: (req, file, cb) => {
           const fileExtension = path.extname(file.originalname);
-          //const FILENAME = file.originalname.split(fileExtension)[0];
-
-          //cb(null, `${FILENAME}-${Date.now()}${fileExtension}`);
           cb(null, `${Date.now()}${fileExtension}`);
-        }
+        },
       }),
       fileFilter: (req, file, cb) => {
         if (MIMETYPES.includes(file.mimetype)) {
@@ -125,30 +123,28 @@ class UserModel extends BaseModel {
           cb(new Error(`Solamente ${MIMETYPES.join("")} están permitidos.`));
         }
       },
-      limits: { fieldSize: 25000000 }
+      limits: { fieldSize: 20000000 },
     });
 
     multerUpload.single("file")(req, res, async (err) => {
       if (err instanceof multer.MulterError || err) {
-        console.log(err);
-        res.sendStatus(500);
-      } else {
-        const defaultProfilePic = "/assets/defaultProfilePic.png";
-        const userId = req.user.id;
-        const identifier = { _id: userId };
-        const property = { $set: { profile: `/assets/${req.file.filename}` } };
-
-        // Eliminar la foto de perfil anterior
-        const user = await this.getById(userId);
-        const userProfilePath = user.profile;
-
-        if (userProfilePath !== defaultProfilePic && fs.existsSync(`../server${userProfilePath}`)) {
-          fs.unlinkSync(`../server${userProfilePath}`);
-        }
-
-        await this.model.findOneAndUpdate(identifier, property);
-        console.log("Foto de perfil actualizada!");
+        logger.error(err);
+        return res.sendStatus(500);
       }
+      
+      const defaultProfilePic = "/assets/defaultProfilePic.png";
+      const userId = req.user.id;
+      const identifier = { _id: userId };
+      const property = { $set: { profile: `/assets/${req.file.filename}` } };
+
+      const user = await this.getById(userId);
+      const userProfilePath = user.profile;
+
+      if (userProfilePath !== defaultProfilePic && fs.existsSync(`../server${userProfilePath}`)) {
+        fs.unlinkSync(`../server${userProfilePath}`);
+      }
+
+      await this.model.findOneAndUpdate(identifier, property);
     });
   }
 }

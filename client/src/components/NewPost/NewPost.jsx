@@ -43,16 +43,18 @@ const NewPost = () => {
         </>
       )}
       <div className="px-4 pt-[8px] pb-0 linkedin-border">
-        <div className="flex items-center ">
-          <img
-            src={user?.profile}
-            alt={user && `${user.firstname} ${user.lastname}`}
-            className="w-12 h-12 mr-2 object-contain rounded-full"
-          />
+        <div className="flex items-center">
+          <div className="flex-shrink-0">
+            <img
+              src={user?.profile}
+              alt={user && `${user.firstname} ${user.lastname}`}
+              className="w-12 h-12 object-cover rounded-full"
+            />
+          </div>
           <button
             type="button"
             onClick={() => setPopupOpen(true)}
-            className="w-full p-3 pl-4 flex bg-white rounded-[35px] border border-gray-400 duration-150 hover:bg-neutral-200"
+            className="w-full p-3 pl-4 ml-2 flex bg-white rounded-[35px] border border-gray-400 duration-150 hover:bg-neutral-200"
           >
             <span className="text-sm text-gray-400">Start a post</span>
           </button>

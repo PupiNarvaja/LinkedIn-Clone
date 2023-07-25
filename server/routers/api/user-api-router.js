@@ -13,4 +13,6 @@ router.get("/suggestion", UserController.getSuggestedUsers);
 
 router.get("/:user", UserController.getUserByUrl);
 
+router.post("/profilePicture", UserController.updateProfilePicture);
+
 module.exports = router;

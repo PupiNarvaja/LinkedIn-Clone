@@ -60,9 +60,21 @@ const getUserByUrl = async (req, res) => {
   }
 }
 
+const updateProfilePicture= async (req, res) => {
+  try {
+    await userModel.updateProfilePicture(req, res);
+  
+    res.sendStatus(200);    
+  } catch (error) {
+    logger.error(error);
+    res.status(500).send({ error: error.message });
+  }
+}
+
 module.exports = {
   getUserInfo,
   getAllUsers,
   getSuggestedUsers,
-  getUserByUrl
+  getUserByUrl,
+  updateProfilePicture
 };

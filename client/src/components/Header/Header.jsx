@@ -12,7 +12,7 @@ const Header = () => {
           <img
             src="https://img.icons8.com/fluency/48/000000/linkedin.png"
             title="Home" alt="Linkedin icon"
-            className="object-contain mr-2"
+            className="object-cover mr-2"
           />
           <div className="w-full max-w-[280px] shrink h-[34px] px-[10px] flex items-center rounded-md bg-[#eef3f8]">
             <img

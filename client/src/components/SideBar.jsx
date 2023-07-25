@@ -24,7 +24,7 @@ const SideBar = () => {
         <img
           src={user?.profile}
           alt=""
-          className=" w-[72px] h-[72px] mt-[-38px] mb-4 rounded-full border-2 border-solid border-white"
+          className=" w-[72px] h-[72px] mt-[-38px] mb-4 object-cover rounded-full border-2 border-solid border-white"
         />
         <h2 className="text-md font-semibold">{user?.firstname} {user?.lastname}</h2>
         <h4 className="text-gray-400 text-xs">{user?.email}</h4>

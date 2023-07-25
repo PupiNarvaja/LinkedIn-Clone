@@ -10,7 +10,7 @@ const Post = ({ profile, author, description, message, comments, timestamp }) =>
           <img
             src={profile}
             alt={author}
-            className="w-12 h-12 object-fit rounded-full"
+            className="w-12 h-12 object-cover rounded-full"
           />
           <div className="ml-2 flex flex-col">
             <h2 className="text-sm font-semibold">{author}</h2>

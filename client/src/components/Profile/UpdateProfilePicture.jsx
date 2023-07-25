@@ -20,7 +20,7 @@ const UpdateProfilePicture = () => {
       const formData = new FormData();
       formData.append('file', selectedFile);
 
-      fetch('/upload', {
+      fetch('/api/users/profilePicture', {
         method: 'POST',
         body: formData,
       })
