@@ -4,10 +4,9 @@ const loginController = require("../../controllers/authControllers/login-control
 const UniversalController = require("../../controllers/universal-controller");
 
 // "/login"
-router.get("/", UniversalController.sendIndex);
+router.route("/").get(UniversalController.sendIndex)
+                 .post(PassportController.login)
 
 router.get("/error", loginController.sendError);
-
-router.post("/", PassportController.login);
 
 module.exports = router;

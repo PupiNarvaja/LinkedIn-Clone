@@ -15,9 +15,13 @@ const JWT_SECRET = process.env.JWT_SECRET;
 // Session
 const SESSION_SECRET = process.env.SESSION_SECRET;
 
+// Node_Env
+const NODE_ENV = process.env.NODE_ENV;
+
 module.exports = {
   URI_CLOUD_CONNECTION,
   PORT,
   JWT_SECRET,
   SESSION_SECRET,
+  NODE_ENV,
 };

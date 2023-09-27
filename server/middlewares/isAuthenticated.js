@@ -6,7 +6,7 @@ module.exports = (req, res, next) => {
 
   if (!cookies.token) {
     if (req.session) {
-      console.log("session destroyed.")
+      logger.info("session destroyed.");
       req.session.destroy();
     }
 
@@ -19,7 +19,10 @@ module.exports = (req, res, next) => {
   if (!verifyToken(token)) {
     return res.redirect("/login");
   }
+  
   logger.info("Valid token!");
 
   next();
 };
+
+//Hay que solucionar el tema de almacenar en react el token, porque no logro que con cada request, el cliente envie los headers correspondientes.

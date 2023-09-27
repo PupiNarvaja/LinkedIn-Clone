@@ -1,4 +1,5 @@
 const userModel = require("./user-model");
+const postModel = require("./post-model");
 const logger = require("../log");
 
 class ModelFactory {
@@ -6,9 +7,11 @@ class ModelFactory {
     switch (modelName) {
       case "user":
         return userModel;
+      case "post":
+        return postModel;
       default:
-        logger.error("Model does not exist.");
-        throw new Error("Model does not exist.");
+        logger.error(modelName, " does not exist.");
+        throw new Error(modelName, " does not exist.");
     }
   }
 }

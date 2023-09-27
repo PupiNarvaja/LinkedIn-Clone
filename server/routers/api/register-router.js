@@ -3,8 +3,7 @@ const PassportController = require("../../controllers/authControllers/passport-c
 const UniversalController = require("../../controllers/universal-controller");
 
 // "/register"
-router.get("/", UniversalController.sendIndex);
-
-router.post("/", PassportController.register);
+router.route("/").get(UniversalController.sendIndex)
+                 .post(PassportController.register)
 
 module.exports = router;

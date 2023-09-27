@@ -8,57 +8,60 @@ const userModel = ModelFactory.getModel("user");
 module.exports = (passport) => {
   const authenticateUser = async (req, email, password, done) => {
     try {
-      if (!(await userModel.existsByEmail(email))) {
+      const user = await userModel.getUserByEmail(email);
+
+      if (!user) {
         logger.error("Requested user does not exist.");
         return done(null, false, { message: "Requested user does not exist." });
       }
 
-      if (!(await userModel.isPasswordValid(email, password))) {
+      const isPasswordValid = await userModel.isPasswordValid(email, password);
+
+      if (!isPasswordValid) {
         logger.error("Wrong password!");
         return done(null, false, { message: "Wrong password." });
       }
 
-      const user = await userModel.getUserByEmail(email);
-
       done(null, user);
     } catch (error) {
-      done(error);
+      logger.error("Error in local.js.", error?.message);
+      return done(error);
     }
   };
 
   const registerUser = async (req, email, password, done) => {
     const { firstname, lastname, age, address, phone, profile, admin } = req.body;
+    
+    const user_already_exists = await userModel.existsByEmail(email);
 
-    try {
-      if (await userModel.existsByEmail(email)) {
-        logger.error("There's an existing user with this email!");
-        return done(null, false);
-      }
-
-      const user = await userModel.saveUser({
-        email,
-        password,
-        firstname,
-        lastname,
-        age,
-        address,
-        phone,
-        profile,
-        admin,
-      });
-
-      // const newUser = await userModel.getById(user._id);
-
-      // mailSender.newRegister(newUser);
-
-      done(null, {
-        ...user,
-        id: user._id,
-        name: `${firstname} ${lastname}`,
-      });
-    } catch (error) {
-      done(error);
+    if (user_already_exists) {
+      logger.error("There's an existing user with this email!");
+      return done(null, false);
     }
+
+    const user = await userModel.saveUser({
+      email,
+      password,
+      firstname,
+      lastname,
+      age,
+      address,
+      phone,
+      profile,
+      admin,
+    });
+
+    // const newUser = await userModel.getById(user._id);
+
+    // mailSender.newRegister(newUser);
+
+    const newUser = {
+      ...user,
+      id: user._id,
+      name: `${firstname} ${lastname}`,
+    };
+
+    done(null, newUser);
   };
 
   passport.use("login", new LocalStrategy({
@@ -76,11 +79,13 @@ module.exports = (passport) => {
   passport.serializeUser((user, done) => done(null, user.id));
   passport.deserializeUser(async (id, done) => {
     const user = await userModel.getById(id);
-    done(null, {
+    const userData = {
       id: user._id.toString(),
       email: user.email,
       firstname: user.firstname,
       lastname: user.lastname,
-    });
+    }
+    
+    done(null, userData);
   });
 };

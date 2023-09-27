@@ -1,7 +1,8 @@
-const { Schema, model } = require("mongoose");
+const { Schema } = require("mongoose");
 const userModel = require("./user-model");
+const BaseModel = require("./base-model");
 
-class PostModel {
+class PostModel extends BaseModel {
   constructor() {
     const schema = new Schema({
       authorId: String,
@@ -10,14 +11,14 @@ class PostModel {
       timestamp: { type: Number, default: Date.now(), format: "%Y-%m-%d" },
     });
 
-    this.model = model("posts", schema);
+    super(schema, "posts");
   }
 
   async getPosts() {
-    const sort = {timestamp: -1};
+    const sort = { timestamp: -1 };
     const posts = await this.model.find().sort(sort);
 
-    const completePosts = await Promise.all(posts.map(async (post) => {
+    const allPosts = await Promise.all(posts.map(async (post) => {
       const { profile, firstname, lastname, description } = await userModel.getById(post.authorId);
       const { message, timestamp, comments } = post;
 
@@ -31,16 +32,17 @@ class PostModel {
       }
     }))
 
-    return completePosts;
+    return allPosts;
   }
 
   async postPost(post, userId) {
-
-    return await this.model.create({
+    const postInfo = {
       authorId: userId,
       message: post.message,
       timestamp: Date.now(),
-    });
+    }
+
+    return await this.model.create(postInfo);
   }
 }
 

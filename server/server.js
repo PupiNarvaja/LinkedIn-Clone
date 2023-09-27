@@ -1,3 +1,5 @@
+const globalErrorHandler = require("./middlewares/globalErrorHandler");
+
 (async () => {
   require("dotenv").config();
   const express = require("express");
@@ -17,11 +19,12 @@
 
   // Routes import
   const universalRouter = require("./routers/universal-router");
-  const postsRouter = require("./routers/api/posts-api-router");
+  const postRouter = require("./routers/api/post-api-router");
   const loginRouter = require("./routers/api/login-api-router");
   const registerRouter = require("./routers/api/register-router");
   const userRouter = require("./routers/api/user-api-router");
-  const jwtRouter = require("./routers/api/jwt-api-router");  
+  const jwtRouter = require("./routers/api/jwt-api-router");
+  const notFoundRouter = require("./routers/api/not-found-router");
 
   const { URI_CLOUD_CONNECTION, PORT, SESSION_SECRET } = require("./config");
 
@@ -65,7 +68,7 @@
 
     app.use("/in/:user", universalRouter);
 
-    app.use("/api/posts", postsRouter);
+    app.use("/api/posts", postRouter);
 
     app.use("/login", loginRouter);
 
@@ -75,7 +78,10 @@
 
     app.use("/api/users", userRouter);
 
-    // Server listening
+    app.use("*", notFoundRouter);
+
+    app.use(globalErrorHandler);
+
     app.listen(PORT, () => logger.info(`🚀 Server online. Running on port: ${PORT}`));
   } catch (error) {
     logger.error("Error on MongoDB.", error);

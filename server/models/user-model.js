@@ -11,17 +11,17 @@ class UserModel extends BaseModel {
     const defaultProfilePic = "/assets/defaultProfilePic.png";
 
     const schema = new Schema({
-      email: { type: String, required: true },
-      firstname: { type: String, required: true },
-      lastname: { type: String, required: true },
-      password: { type: String, required: true },
-      description: { type: String, required: true },
-      age: { type: Number, required: true },
-      address: { type: String, required: true },
-      phone: { type: Number, required: true },
-      profile: { type: String, default: defaultProfilePic, required: true },
-      url: { type: String, required: true },
-      admin: { type: Boolean, default: false, required: true },
+      email: { type: String, required: [true, "No email provided."] },
+      firstname: { type: String, required: [true, "No firstname provided."] },
+      lastname: { type: String, required: [true, "No lastname provided."] },
+      password: { type: String, required: [true, "No password provided."] },
+      description: { type: String, required: [true, "No description provided."] },
+      age: { type: Number, required: [true, "No age provided."] },
+      address: { type: String, required: [true, "No address provided."] },
+      phone: { type: Number, required: [true, "No phone provided."] },
+      profile: { type: String, default: defaultProfilePic, required: [true, "No profile picture provided."] },
+      url: { type: String, required: [true, "No URL provided."] },
+      admin: { type: Boolean, default: false, required: [true, "Not allowed."] },
     });
 
     super(schema, "users");
@@ -71,6 +71,11 @@ class UserModel extends BaseModel {
 
   async getUserByEmail(email) {
     const user = await this.model.findOne({ email }).lean(); // Desestructurar user: Razones de seguridad quizas.
+    
+    if (!user) {
+      return null;
+    }
+
     return {
       id: user._id,
       firstname: user.firstname,
@@ -84,7 +89,7 @@ class UserModel extends BaseModel {
     const user = await this.model.findOne({ url }).lean();
     
     if (!user) {
-      return null
+      return null;
     }
     
     return {
@@ -105,24 +110,30 @@ class UserModel extends BaseModel {
 
   async updateProfilePicture(req, res) {
     const MIMETYPES = ["image/jpeg", "image/pdf", "image/png"];
+
+    const diskStorageConfig = {
+      destination: (req, file, cb) => {
+        cb(null, "../server/assets");
+      },
+      filename: (req, file, cb) => {
+        const fileExtension = path.extname(file.originalname);
+        cb(null, `${Date.now()}${fileExtension}`);
+      },
+    }
+
+    const checkMimetypes = (req, file, cb) => {
+      const type_is_allowed = MIMETYPES.includes(file.mimetype);
+
+      if (type_is_allowed) {
+        cb(null, true);
+      } else {
+        cb(new Error(`Only ${MIMETYPES.join("")} are allowed.`));
+      }
+    }
     
     const multerUpload = multer({
-      storage: multer.diskStorage({
-        destination: (req, file, cb) => {
-          cb(null, "../server/assets")
-        },
-        filename: (req, file, cb) => {
-          const fileExtension = path.extname(file.originalname);
-          cb(null, `${Date.now()}${fileExtension}`);
-        },
-      }),
-      fileFilter: (req, file, cb) => {
-        if (MIMETYPES.includes(file.mimetype)) {
-          cb(null, true);
-        } else {
-          cb(new Error(`Solamente ${MIMETYPES.join("")} están permitidos.`));
-        }
-      },
+      storage: multer.diskStorage(diskStorageConfig),
+      fileFilter: checkMimetypes(),
       limits: { fieldSize: 20000000 },
     });
 
@@ -146,6 +157,17 @@ class UserModel extends BaseModel {
 
       await this.model.findOneAndUpdate(identifier, property);
     });
+  }
+
+  async getPublicUserInfo(id) {
+    const user = await this.model.findById(id);
+      
+    if (!user) {
+      return null;
+    }
+
+    const { address, admin, age, email, firstname, lastname, phone, profile, _id } = user;
+    return { address, admin, age, email, firstname, lastname, phone, profile, _id };
   }
 }
 

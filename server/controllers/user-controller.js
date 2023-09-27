@@ -1,75 +1,51 @@
 const ModelFactory = require("../models/model-factory");
-const logger = require("../log");
+const asyncErrorHandler = require("../utils/asyncErrorHandler");
 
 const userModel = ModelFactory.getModel("user");
 
-const getUserInfo = async (req, res) => {
-  // if (!req.user) {
-  //   console.log("No user pupi") // SE GUARDA EN LA SESSION. Se debe eliminar la session si no hay token LEER ABAJO ->
-  //   return res.status(204).send({ error: "No user connected." }); CONTROLAR
-  // }
+const getUserInfo = asyncErrorHandler(async (req, res, next) => {
   const { id } = req.user;
 
-  try {
-    const { address, admin, age, email, firstname, lastname, description, phone, profile, url, _id } = await userModel.getById(id);
-    const user = { address, admin, age, email, firstname, lastname, description, phone, profile, url, _id }; //Refactorizar.
-    res.send(user);
-  } catch (error) {
-    logger.error(error);
-    res.status(500).send({ error: error.message });
-  }
-};
+  const user = await userModel.getPublicUserInfo(id);
 
-const getAllUsers = async (req, res) => {
-  try {
-    const users = await userModel.getAllUsers();
-    res.send(users);
-  } catch (error) {
-    logger.error(error);
-    res.status(500).send({ error: error.message });
+  if (!user) {
+    return next(new CustomError("Error 404. User not found.", 404));
   }
-};
 
-const getSuggestedUsers = async (req, res) => {
+  res.send(user);
+});
+
+const getAllUsers = asyncErrorHandler(async (req, res, next) => {
+  const users = await userModel.getAllUsers();
+
+  res.send(users);
+});
+
+const getSuggestedUsers = asyncErrorHandler(async (req, res, next) => {
   const { id } = req.user;
+
+  const users = await userModel.getSuggestedUsers(id);
   
-  try {
-    const users = await userModel.getSuggestedUsers(id);
-    res.send(users);
-  } catch (error) {
-    logger.error(error);
-    res.status(500).send({ error: error.message });
-  }
-}
+  res.send(users);
+});
 
-const getUserByUrl = async (req, res) => {
+const getUserByUrl = asyncErrorHandler(async (req, res, next) => {
   const url = req.params.user;
 
-  try {
-    const user = await userModel.getUserByUrl(url);
-    console.log("user", user)
+  const user = await userModel.getUserByUrl(url);
 
-    if (!user) {
-      return res.status(404).send({ error: `No user found for url: "${url}"` });
-    }
-
-    res.send(user);
-  } catch (error) {
-    logger.error(error);
-    res.status(500).send({ error: error.message });
+  if (!user) {
+    return next(new CustomError(`No user found for url: "${url}"`, 404));
   }
-}
 
-const updateProfilePicture= async (req, res) => {
-  try {
-    await userModel.updateProfilePicture(req, res);
-  
-    res.sendStatus(200);    
-  } catch (error) {
-    logger.error(error);
-    res.status(500).send({ error: error.message });
-  }
-}
+  res.send(user);
+});
+
+const updateProfilePicture = asyncErrorHandler(async (req, res, next) => {
+  await userModel.updateProfilePicture(req, res);
+
+  res.sendStatus(200);    
+});
 
 module.exports = {
   getUserInfo,
