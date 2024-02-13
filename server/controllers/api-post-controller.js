@@ -1,5 +1,4 @@
 const postModel = require("../models/post-model");
-const logger = require("../log");
 const asyncErrorHandler = require("../utils/asyncErrorHandler");
 
 const getPosts = asyncErrorHandler(async (req, res, next) => {
@@ -17,7 +16,18 @@ const postPost = asyncErrorHandler(async (req, res, next) => {
   res.status(201).send(data);
 });
 
+const postComment = asyncErrorHandler(async (req, res, next) => {
+  const { postId, content, authorId } = req.body;
+  //const { authorId } = req.user;
+
+  await postModel.postComment(postId, authorId, content);
+
+  res.sendStatus(201);
+});
+
+
 module.exports = {
   getPosts,
   postPost,
+  postComment,
 };

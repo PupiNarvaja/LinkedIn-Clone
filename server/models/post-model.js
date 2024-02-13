@@ -1,4 +1,5 @@
 const { Schema } = require("mongoose");
+const Comment = require("../classes/comment-class");
 const userModel = require("./user-model");
 const BaseModel = require("./base-model");
 
@@ -45,8 +46,12 @@ class PostModel extends BaseModel {
     return await this.model.create(postInfo);
   }
 
-  async postComment(postId, comment) {
-    return await this.model.findOneAndUpdate(postId, { $push: { comments: comment } });
+  async postComment(postId, authorId, content) {
+    const comment = new Comment(content, authorId);
+    const filter = { _id: postId };
+    const update = { $push: { comments: comment }};
+    
+    return await this.model.findOneAndUpdate(filter, update);
   }
 }
 
