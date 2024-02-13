@@ -1,7 +1,7 @@
 import BtnReaction from "./BtnReaction";
 import { dateFormater } from "../../utils/dateFormater";
 
-const Post = ({ profile, author, description, message, comments, timestamp }) => {
+const Post = ({ profile, author, description, content, comments, timestamp }) => {
 
   return (
     <div className="w-full mb-2 px-4 py-3 pb-1 linkedin-border">
@@ -23,7 +23,7 @@ const Post = ({ profile, author, description, message, comments, timestamp }) =>
           Follow
         </button>
       </header>
-      <p className="text-sm break-words whitespace-pre-line">{message}</p>
+      <p className="text-sm break-words whitespace-pre-line">{content}</p>
       <div className="flex justify-around">
         <BtnReaction
           title="Like"

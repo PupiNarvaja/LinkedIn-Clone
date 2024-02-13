@@ -5,9 +5,9 @@ const BaseModel = require("./base-model");
 class PostModel extends BaseModel {
   constructor() {
     const schema = new Schema({
-      authorId: String,
-      message: String,
-      comments: [{ body: String, date: Date }],
+      author: { type: Schema.Types.ObjectId, ref: 'User' },
+      content: String,
+      comments: [{ type: Object }],
       timestamp: { type: Number, default: Date.now(), format: "%Y-%m-%d" },
     });
 
@@ -19,11 +19,11 @@ class PostModel extends BaseModel {
     const posts = await this.model.find().sort(sort);
 
     const allPosts = await Promise.all(posts.map(async (post) => {
-      const { profile, firstname, lastname, description } = await userModel.getById(post.authorId);
-      const { message, timestamp, comments } = post;
+      const { profile, firstname, lastname, description } = await userModel.getById(post.author);
+      const { content, timestamp, comments } = post;
 
       return {
-        message,
+        content,
         timestamp,
         comments,
         profile,
@@ -37,12 +37,16 @@ class PostModel extends BaseModel {
 
   async postPost(post, userId) {
     const postInfo = {
-      authorId: userId,
-      message: post.message,
+      author: userId,
+      content: post.content,
       timestamp: Date.now(),
     }
 
     return await this.model.create(postInfo);
+  }
+
+  async postComment(postId, comment) {
+    return await this.model.findOneAndUpdate(postId, { $push: { comments: comment } });
   }
 }
 

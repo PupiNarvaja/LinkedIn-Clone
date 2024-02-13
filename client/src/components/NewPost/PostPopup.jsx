@@ -15,7 +15,7 @@ const PostPopup = ({ openPopup, closePostPopup }) => {
 
   const sendPost = async () => {
     try {
-      await axios.post("http://localhost:8080/api/posts", { message: post.trim() });
+      await axios.post("http://localhost:8080/api/posts", { content: post.trim() });
       // --------------------------> Con redux pushear a posts.
       openPopup(false);
     } catch (error) {
