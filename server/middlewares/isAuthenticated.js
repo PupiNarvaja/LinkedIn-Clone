@@ -26,3 +26,4 @@ module.exports = (req, res, next) => {
 };
 
 //Hay que solucionar el tema de almacenar en react el token, porque no logro que con cada request, el cliente envie los headers correspondientes.
+// Nueva suposición: Guardar el token en context/redux. Usar useFetch para centralizar las requests e incluir siempre el token.

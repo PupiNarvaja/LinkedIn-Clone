@@ -18,18 +18,7 @@ const postPost = asyncErrorHandler(async (req, res, next) => {
   res.status(201).send(data);
 });
 
-const postComment = asyncErrorHandler(async (req, res, next) => {
-  const { postId, content } = req.body;
-  const { id } = req.user;
-
-  await postModel.postComment(postId, id, content);
-
-  res.sendStatus(201);
-});
-
-
 module.exports = {
   getPosts,
   postPost,
-  postComment,
 };

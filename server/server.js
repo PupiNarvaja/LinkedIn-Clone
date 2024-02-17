@@ -9,6 +9,7 @@ const globalErrorHandler = require("./middlewares/globalErrorHandler");
   const mongoStore = require("connect-mongo");
   const cors = require("cors");
   //const compression = require("compression");
+  // Usar Helmet
   const passport = require("passport");
   const path = require("path");
 

@@ -1,7 +1,6 @@
 const { Schema } = require("mongoose");
 const BaseModel = require("./base-model");
 const postModel = require("./post-model");
-const userModel = require("./user-model");
 
 class CommentModel extends BaseModel {
   constructor() {
@@ -41,20 +40,12 @@ class CommentModel extends BaseModel {
 
     await this.updatePostWithComment(postId, comment._id);
 
-    const user = await userModel.getPublicUserInfo(authorId);
-
-    const newComment = {
-      author: {
-        firstname: user.firstname,
-        lastname: user.lastname,
-        profile: user.profile,
-        description: user.description,
-        url: user.url
-      },
-      _id: comment._id,
-      content: comment.content,
-      timestamp: comment.timestamp,
+    const authorProperties = {
+      path: "author",
+      select: "firstname lastname profile description url"
     }
+
+    const newComment = await this.model.findById(comment._id).populate(authorProperties);
 
     return newComment;
   }

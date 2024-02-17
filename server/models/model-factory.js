@@ -14,7 +14,7 @@ class ModelFactory {
         return commentModel;
       default:
         logger.error(modelName, " does not exist.");
-        throw new Error(modelName, " does not exist.");
+        throw new Error(`${modelName} does not exist.`);
     }
   }
 }

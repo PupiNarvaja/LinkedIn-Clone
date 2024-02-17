@@ -15,7 +15,7 @@ const generateToken = (user) => {
 
 const verifyToken = (token) => {
   try {
-    jwt.verify(token, JWT_SECRET); //Deberia mostrar en el front end. Recargar.
+    jwt.verify(token, JWT_SECRET);
     return true;
   } catch (error) {
     logger.error(error?.message);

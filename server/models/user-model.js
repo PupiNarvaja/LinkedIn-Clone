@@ -70,14 +70,12 @@ class UserModel extends BaseModel {
   }
 
   async getUserByEmail(email) {
-    const user = await this.model.findOne({ email }).lean(); // Desestructurar user: Razones de seguridad quizas.
+    const user = await this.model.findOne({ email }).lean();
     
     if (!user) {
       return null;
     }
-
-    console.log(user);
-
+    
     return {
       id: user._id,
       firstname: user.firstname,
