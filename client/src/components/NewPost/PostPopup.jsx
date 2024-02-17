@@ -1,34 +1,38 @@
 import { useState } from "react";
-import { hasOnlySpaces, characterLimitReached, } from "../../utils/postValidation";
-import Loader from "../../utils/loader/Loader";
-import axios from "axios";
-import CloseButton from "../Buttons/CloseButton";
+import { characterLimitReached, invalidContentDisablesButton } from "../../utils/postValidation";
 import { useSelector } from "react-redux";
+import Loader from "../../utils/loader/Loader";
+import CloseButton from "../Buttons/CloseButton";
+import PostButton from "../Buttons/PostButton";
+import LimitCharacterSpan from "../LimitCharacterSpan/LimitCharacterSpan";
+import usePostRequest from "../../customHooks/usePostRequest";
 
 const PostPopup = ({ openPopup, closePostPopup }) => {
   const [post, setPost] = useState("");
   const [isLoading, setIsLoading] = useState(true);
 
   const user = useSelector((state) => state.userReducer.user);
+  const characterLimit = 3000;
+  
+  const sendPost = async () => {
+    await usePostRequest("http://localhost:8080/api/posts", { content: post.trim() });
+
+    openPopup(false);
+    //   // --------------------------> Con redux pushear a posts.
+  };
+  
+  const handleClosePopup = () => closePostPopup(post);
+
+  const handleSetPost = (e) => setPost(e.target.value);
 
   setTimeout(() => setIsLoading(false), 750);
-
-  const sendPost = async () => {
-    try {
-      await axios.post("http://localhost:8080/api/posts", { content: post.trim() });
-      // --------------------------> Con redux pushear a posts.
-      openPopup(false);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
+  
   return (
     <div className="w-[100vw] h-[100vh] top-0 left-0 fixed">
       <div className="max-w-[552px] mx-auto relative top-9 bg-white rounded-lg z-10">
         <div className="px-6 py-4 flex justify-between items-center border-b-[0.1px] border-b-gray-200">
           <h2 className="text-xl text-linkedin-black">Create a post</h2>
-          <CloseButton size="24" onClose={() => closePostPopup(post)} classes="p-2 right-5" />
+          <CloseButton size="24" onClose={handleClosePopup} classes="p-2 right-5" />
         </div>
         {isLoading ? (
           <div className="flex justify-center py-40">
@@ -37,7 +41,7 @@ const PostPopup = ({ openPopup, closePostPopup }) => {
         ) : (
           <>
             <div className="px-6 py-3 flex items-end">
-              <img src={user?.profile} alt="" className="w-12 h-12 rounded-full" />
+              <img src={user?.profile} alt="" className="w-12 h-12 rounded-full object-cover" />
               <div className="ml-2 flex flex-col">
                 <span className="font-semibold">{`${user?.firstname} ${user?.lastname}`}</span>
                 <button className="w-fit px-3 py-[5px] font-semibold border border-linkedin-gray rounded-full text-[#00000099] text-sm">
@@ -54,21 +58,15 @@ const PostPopup = ({ openPopup, closePostPopup }) => {
                 placeholder="What do you want to talk about?"
                 className="w-full resize-none outline-none"
                 value={post}
-                onChange={(e) => setPost(e.target.value)}
+                onChange={handleSetPost}
               ></textarea>
             </div>
-            {characterLimitReached(post) ? (
+            {characterLimitReached(post, characterLimit) ? (
               <div className="pt-3 pr-6 pb-1 pl-4 flex justify-between items-center text-sm text-linkedin-red">
-                <span className="flex items-center">
-                  <img
-                    src="https://img.icons8.com/flat-round/14/000000/no-entry--v1.png"
-                    className="mr-1"
-                  />
-                  You have exceeded the maximum character limit
-                </span>
-                <span className="ml-8 py-[5px] font-semibold">
-                  -{post.length - 3000}
-                </span>
+                <LimitCharacterSpan 
+                  length={post.length}
+                  characterLimit={characterLimit}
+                />
               </div>
             ) : (
               <div className="pt-3 pr-6 pb-1 pl-4 flex justify-start">
@@ -79,13 +77,11 @@ const PostPopup = ({ openPopup, closePostPopup }) => {
             )}
 
             <div className="px-6 py-3 flex justify-end">
-              <button
-                className="px-4 py-1 my-1 rounded-full font-semibold text-white bg-linkedin-blue hover:bg-linkedin-darkblue disabled:cursor-not-allowed disabled:text-[#0000004D] disabled:bg-[#00000014] duration-150"
-                disabled={hasOnlySpaces(post) || characterLimitReached(post)}
-                onClick={() => sendPost()}
-              >
-                Post
-              </button>
+              <PostButton
+                text={"Post"}
+                isDisabled={invalidContentDisablesButton(post, characterLimit)}
+                onClick={sendPost}
+              />
             </div>
           </>
         )}

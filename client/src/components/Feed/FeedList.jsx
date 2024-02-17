@@ -2,12 +2,13 @@ import React from "react";
 import Post from "../Post/Post";
 
 const FeedList = ({ posts }) => {
-  return posts.map(({ _id, profile, author, description, content, comments, timestamp }) => (
+  return posts.map(({ _id, author, content, comments, timestamp }) => (
     <Post
       key={_id}
-      profile={profile}
-      author={author}
-      description={description}
+      postId={_id}
+      profile={author.profile}
+      author={`${author.firstname} ${author.lastname}`}
+      description={author.description}
       content={content}
       comments={comments}
       timestamp={timestamp}

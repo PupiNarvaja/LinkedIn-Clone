@@ -51,7 +51,7 @@ module.exports = (passport) => {
       admin,
     });
 
-    // const newUser = await userModel.getById(user._id);
+    // const newUser = await userModel.findById(user._id);
 
     // mailSender.newRegister(newUser);
 
@@ -78,7 +78,7 @@ module.exports = (passport) => {
 
   passport.serializeUser((user, done) => done(null, user.id));
   passport.deserializeUser(async (id, done) => {
-    const user = await userModel.getById(id);
+    const user = await userModel.findById(id);
     const userData = {
       id: user._id.toString(),
       email: user.email,

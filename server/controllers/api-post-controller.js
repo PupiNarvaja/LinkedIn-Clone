@@ -1,5 +1,7 @@
-const postModel = require("../models/post-model");
+const ModelFactory = require("../models/model-factory");
 const asyncErrorHandler = require("../utils/asyncErrorHandler");
+
+const postModel = ModelFactory.getModel("post");
 
 const getPosts = asyncErrorHandler(async (req, res, next) => {
   const posts = await postModel.getPosts();
@@ -17,10 +19,10 @@ const postPost = asyncErrorHandler(async (req, res, next) => {
 });
 
 const postComment = asyncErrorHandler(async (req, res, next) => {
-  const { postId, content, authorId } = req.body;
-  //const { authorId } = req.user;
+  const { postId, content } = req.body;
+  const { id } = req.user;
 
-  await postModel.postComment(postId, authorId, content);
+  await postModel.postComment(postId, id, content);
 
   res.sendStatus(201);
 });

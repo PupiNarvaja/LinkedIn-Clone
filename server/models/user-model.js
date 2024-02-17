@@ -76,6 +76,8 @@ class UserModel extends BaseModel {
       return null;
     }
 
+    console.log(user);
+
     return {
       id: user._id,
       firstname: user.firstname,
@@ -148,7 +150,7 @@ class UserModel extends BaseModel {
       const identifier = { _id: userId };
       const property = { $set: { profile: `/assets/${req.file.filename}` } };
 
-      const user = await this.getById(userId);
+      const user = await this.findById(userId);
       const userProfilePath = user.profile;
 
       if (userProfilePath !== defaultProfilePic && fs.existsSync(`../server${userProfilePath}`)) {
@@ -160,14 +162,14 @@ class UserModel extends BaseModel {
   }
 
   async getPublicUserInfo(id) {
-    const user = await this.model.findById(id);
+    const excludePassword = { password: 0 }
+    const user = await this.model.findById(id, excludePassword);
       
     if (!user) {
       return null;
     }
 
-    const { address, admin, age, email, firstname, lastname, phone, profile, _id } = user;
-    return { address, admin, age, email, firstname, lastname, phone, profile, _id };
+    return user;
   }
 }
 

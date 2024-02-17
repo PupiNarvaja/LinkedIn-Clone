@@ -27,7 +27,7 @@ const SideBar = () => {
           className=" w-[72px] h-[72px] mt-[-38px] mb-4 object-cover rounded-full border-2 border-solid border-white"
         />
         <h2 className="text-md font-semibold">{user?.firstname} {user?.lastname}</h2>
-        <h4 className="text-gray-400 text-xs">{user?.email}</h4>
+        <h4 className="text-gray-400 text-xs">{user?.description}</h4>
       </div>
 
       <div className="px-[10px] py-3 border border-b-0 border-gray-300 bg-white">

@@ -8,7 +8,7 @@ import UpdateProfilePicture from "./UpdateProfilePicture";
 const Profile = () => {
   const params = useParams();
   const userUrl = params.user;
-  const { data: user, isLoading, error, status } = useFetch(`http://localhost:8080/api/users/${userUrl}`, []);
+  const { data: user, isLoading, error } = useFetch(`http://localhost:8080/api/users/${userUrl}`, []);
 
   return (
     <>

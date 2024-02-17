@@ -5,8 +5,13 @@ class BaseModel {
     this.model = model(modelName, schema);
   }
 
-  async getById(id) {
+  // Repetitivo. Mongoose ya tiene este metodo pero no funciona. Tiene que ver con el factory y como exporto los modelos.
+  async findById(id) {
     return await this.model.findById(id);
+  }
+
+  async findOneAndUpdate(filter, update) {
+    return await this.model.findOneAndUpdate(filter, update);
   }
 }
 

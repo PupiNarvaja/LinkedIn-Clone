@@ -20,6 +20,7 @@ const globalErrorHandler = require("./middlewares/globalErrorHandler");
   // Routes import
   const universalRouter = require("./routers/universal-router");
   const postRouter = require("./routers/api/post-api-router");
+  const commentRouter = require("./routers/api/comment-router");
   const loginRouter = require("./routers/api/login-api-router");
   const registerRouter = require("./routers/api/register-router");
   const userRouter = require("./routers/api/user-api-router");
@@ -69,6 +70,8 @@ const globalErrorHandler = require("./middlewares/globalErrorHandler");
     app.use("/in/:user", universalRouter);
 
     app.use("/api/posts", postRouter);
+
+    app.use("/api/comments", commentRouter);
 
     app.use("/login", loginRouter);
 

@@ -1,6 +1,6 @@
 import React from "react";
 
-const FeedSuggestionOption = ({ _id, profile, firstname, lastname, description }) => {
+const FeedSuggestionOption = ({ id, profile, firstname, lastname, description }) => {
   
   return (
     <li className="my-3 flex">
