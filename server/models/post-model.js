@@ -13,6 +13,15 @@ class PostModel extends BaseModel {
 
     super(schema, "posts");
   }
+  
+  // Only helps other methods.
+  async updateLikeInPost(postId, update) {
+    const filter = { _id: postId };
+
+    const like = await this.model.findOneAndUpdate(filter, update);
+
+    return like;
+  }
 
   async getPosts() {
     const sort = { timestamp: -1 };
@@ -59,26 +68,13 @@ class PostModel extends BaseModel {
   async likeAPost(userId, postId) {
     const update = { $push: { likes: userId }};
 
-    const like = await updateLikeInPost(postId, update);
-
-    return like;
+    await this.updateLikeInPost(postId, update);
   }
 
   async unlikeAPost(userId, postId) {
     const update = { $pull: { likes: userId }};
 
-    const like = await updateLikeInPost(postId, update);
-
-    return like;
-  }
-
-  // Only helps other methods.
-  async updateLikeInPost(postId, update) {
-    const filter = { _id: postId };
-
-    const like = await this.model.findOneAndUpdate(filter, update);
-
-    return like;
+    await this.updateLikeInPost(postId, update);
   }
 }
 
