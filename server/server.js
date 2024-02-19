@@ -91,3 +91,11 @@ const globalErrorHandler = require("./middlewares/globalErrorHandler");
     logger.error("Error on MongoDB.", error);
   }
 })();
+
+
+// Al expirar el token, si el usuario da like por ej,
+// llega error cannot destructure property "id" of "req.user"
+// as it is undefined.
+
+// Aveces al recargar, no se por qué, _id react lo toma como null.
+// Quizas se renderiza un componente precipitadamente.

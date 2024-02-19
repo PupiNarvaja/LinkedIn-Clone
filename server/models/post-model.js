@@ -6,9 +6,9 @@ class PostModel extends BaseModel {
     const schema = new Schema({
       author: { type: Schema.Types.ObjectId, ref: "users", required: true },
       comments: [{ type: Schema.Types.ObjectId, ref: "comments", required: true }],
+      likes: [{ type: Schema.Types.ObjectId, ref: "users", required: true }],
       content: { type: String, required: true },
       timestamp: { type: Number, default: Date.now(), format: "%Y-%m-%d", required: true },
-      // Likes.
     });
 
     super(schema, "posts");
@@ -31,10 +31,16 @@ class PostModel extends BaseModel {
       }
     }
 
+    const likesProperties = {
+      path: "likes",
+      select: "firstname lastname profile description url",
+    }
+
     const posts = await this.model
     .find()
     .populate(authorProperties)
     .populate(commentsProperties)
+    .populate(likesProperties)
     .sort(sort)
 
     return posts;
@@ -48,6 +54,31 @@ class PostModel extends BaseModel {
     }
 
     return await this.model.create(postInfo);
+  }
+
+  async likeAPost(userId, postId) {
+    const update = { $push: { likes: userId }};
+
+    const like = await updateLikeInPost(postId, update);
+
+    return like;
+  }
+
+  async unlikeAPost(userId, postId) {
+    const update = { $pull: { likes: userId }};
+
+    const like = await updateLikeInPost(postId, update);
+
+    return like;
+  }
+
+  // Only helps other methods.
+  async updateLikeInPost(postId, update) {
+    const filter = { _id: postId };
+
+    const like = await this.model.findOneAndUpdate(filter, update);
+
+    return like;
   }
 }
 

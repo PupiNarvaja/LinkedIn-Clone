@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux'
 import { characterLimitReached, invalidContentDisablesButton } from "../../utils/postValidation";
 import { dateFormater } from "../../utils/dateFormater";
 import usePostRequest from "../../customHooks/usePostRequest";
@@ -8,13 +9,18 @@ import BtnReaction from "./BtnReaction";
 import PostButton from "../Buttons/PostButton";
 import LimitCharacterSpan from "../LimitCharacterSpan/LimitCharacterSpan";
 import Loader from "../../utils/loader/Loader";
+import LikesCounter from "../LikesCounter/LikesCounter";
+import useDeleteRequest from "../../customHooks/useDeleteRequest";
 
-const Post = ({ postId, profile, author, description, content, comments, timestamp }) => {
+const Post = ({ postId, profile, author, description, content, comments, likes, timestamp }) => {
   const [isCommentOpen, setIsCommentOpen] = useState(false);
   const [comment, setComment] = useState("");
+  const [likeCount, setLikeCount] = useState(likes.length);
+  const [liked, setLiked] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   
   const characterLimit = 1250;
+  const user = useSelector((state) => state.userReducer.user);
 
   const postComment = async () => {
     try {
@@ -36,6 +42,18 @@ const Post = ({ postId, profile, author, description, content, comments, timesta
       console.log(error);
     }
   }
+  
+  const likeAPost = async () => {
+    setLiked(true);
+    setLikeCount(likeCount + 1);
+    await usePostRequest("http://localhost:8080/api/posts/like", { postId });
+  }
+
+  const UnlikeAPost = async () => {
+    setLiked(false);
+    setLikeCount(likeCount - 1);
+    await useDeleteRequest("http://localhost:8080/api/posts/like", { postId });
+  }
 
   const handleOpenComment = () => {
     setIsCommentOpen(!isCommentOpen);
@@ -44,6 +62,11 @@ const Post = ({ postId, profile, author, description, content, comments, timesta
   const handleComment = (e) => {
     setComment(e.target.value);
   }
+
+  useEffect(() => {
+    setLiked(likes.some(like => like._id === user._id));
+    setLikeCount(likes.length);
+  }, [likes, user])
 
   return (
     <div className="w-full mb-2 px-4 py-3 pb-1 linkedin-border">
@@ -70,9 +93,9 @@ const Post = ({ postId, profile, author, description, content, comments, timesta
       <p className="text-sm break-words whitespace-pre-line">{content}</p>
       <div className="flex justify-around">
         <BtnReaction
-          title="Like"
-          icon="https://img.icons8.com/pastel-glyph/24/737373/thumb-up--v2.png"
-          onClick={() => alert("Feature not implemented yet")}
+          title={"Like"}
+          icon={liked ? "https://img.icons8.com/pastel-glyph/24/0A66C2/thumb-up--v2.png" : "https://img.icons8.com/pastel-glyph/24/737373/thumb-up--v2.png"}
+          onClick={liked ? UnlikeAPost : likeAPost}
         />
         <BtnReaction
           title="Comment"
@@ -90,6 +113,12 @@ const Post = ({ postId, profile, author, description, content, comments, timesta
           onClick={() => alert("Feature not implemented yet")}
         />
       </div>
+
+      { likeCount !== 0  &&
+        <LikesCounter
+          likes={likeCount}
+        />
+      }
 
       { isCommentOpen &&
         <InputComment
@@ -123,7 +152,5 @@ const Post = ({ postId, profile, author, description, content, comments, timesta
     </div>
   );
 };
-
-// Averiguar como actualizar al postear algo nuevo o comentario, que solo se actualice ese.
 
 export default Post;

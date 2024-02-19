@@ -18,7 +18,27 @@ const postPost = asyncErrorHandler(async (req, res, next) => {
   res.status(201).send(data);
 });
 
+const likeAPost = asyncErrorHandler(async (req, res, next) => {
+  const { postId } = req.body;
+  const { id } = req.user;
+
+  const like = await postModel.likeAPost(id, postId);
+
+  res.status(201).send(like);
+});
+
+const unlikeAPost = asyncErrorHandler(async (req, res, next) => {
+  const { postId } = req.body;
+  const { id } = req.user;
+
+  const unlike = await postModel.unlikeAPost(id, postId);
+
+  res.status(204).send(unlike);
+});
+
 module.exports = {
   getPosts,
   postPost,
+  likeAPost,
+  unlikeAPost,
 };
