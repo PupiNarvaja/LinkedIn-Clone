@@ -64,8 +64,10 @@ const Post = ({ postId, profile, author, description, content, comments, likes, 
   }
 
   useEffect(() => {
-    setLiked(likes.some(like => like._id === user._id));
-    setLikeCount(likes.length);
+    if (likes && user) {
+      setLiked(likes.some(like => like._id === user._id));
+      setLikeCount(likes.length);
+    }
   }, [likes, user])
 
   return (
