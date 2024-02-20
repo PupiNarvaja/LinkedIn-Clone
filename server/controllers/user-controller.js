@@ -4,7 +4,7 @@ const asyncErrorHandler = require("../utils/asyncErrorHandler");
 const userModel = ModelFactory.getModel("user");
 
 const getUserInfo = asyncErrorHandler(async (req, res, next) => {
-  const { id } = req.user;
+  const { _id: id } = req.user;
 
   const user = await userModel.getPublicUserInfo(id);
 
@@ -22,7 +22,7 @@ const getAllUsers = asyncErrorHandler(async (req, res, next) => {
 });
 
 const getSuggestedUsers = asyncErrorHandler(async (req, res, next) => {
-  const { id } = req.user;
+  const { _id: id } = req.user;
 
   const users = await userModel.getSuggestedUsers(id);
   
@@ -42,9 +42,9 @@ const getUserByUrl = asyncErrorHandler(async (req, res, next) => {
 });
 
 const updateProfilePicture = asyncErrorHandler(async (req, res, next) => {
-  await userModel.updateProfilePicture(req, res);
+  await userModel.updateProfilePicture(req);
 
-  res.sendStatus(200);    
+  res.sendStatus(200);
 });
 
 module.exports = {

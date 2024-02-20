@@ -5,7 +5,7 @@ const commentModel = ModelFactory.getModel("comment");
 
 const postComment = asyncErrorHandler(async (req, res, next) => {
   const { postId, content } = req.body;
-  const { id } = req.user;
+  const { _id: id } = req.user;
 
   const comment = await commentModel.postComment(postId, id, content);
 

@@ -2,7 +2,6 @@ const LocalStrategy = require("passport-local").Strategy;
 // const mailSender = require("../notifications/mail");
 const ModelFactory = require("../models/model-factory");
 const logger = require("../log");
-
 const userModel = ModelFactory.getModel("user");
 
 module.exports = (passport) => {
@@ -30,7 +29,7 @@ module.exports = (passport) => {
   };
 
   const registerUser = async (req, email, password, done) => {
-    const { firstname, lastname, age, address, phone, profile, admin } = req.body;
+    const { firstname, lastname, age, description, address, phone, profile, admin } = req.body;
     
     const user_already_exists = await userModel.existsByEmail(email);
 
@@ -45,23 +44,14 @@ module.exports = (passport) => {
       firstname,
       lastname,
       age,
+      description,
       address,
       phone,
       profile,
       admin,
     });
 
-    // const newUser = await userModel.findById(user._id);
-
-    // mailSender.newRegister(newUser);
-
-    const newUser = {
-      ...user,
-      id: user._id,
-      name: `${firstname} ${lastname}`,
-    };
-
-    done(null, newUser);
+    done(null, user);
   };
 
   passport.use("login", new LocalStrategy({
@@ -76,11 +66,14 @@ module.exports = (passport) => {
     passReqToCallback: true,
   }, registerUser));
 
-  passport.serializeUser((user, done) => done(null, user.id));
+  passport.serializeUser((user, done) => {
+    done(null, user._id)
+  });
+
   passport.deserializeUser(async (id, done) => {
     const user = await userModel.findById(id);
     const userData = {
-      id: user._id.toString(),
+      _id: user._id.toString(),
       email: user.email,
       firstname: user.firstname,
       lastname: user.lastname,

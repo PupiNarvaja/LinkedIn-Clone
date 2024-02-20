@@ -1,10 +1,10 @@
 import React from "react";
 
-const FeedSuggestionOption = ({ id, profile, firstname, lastname, description }) => {
+const FeedSuggestionOption = ({ _id, profile, firstname, lastname, description }) => {
   
   return (
     <li className="my-3 flex">
-      <img src={profile} alt={`${firstname} ${lastname}`} className="w-12 h-12 mr-3 rounded-full" />
+      <img src={profile} alt={`${firstname} ${lastname}`} className="w-12 h-12 mr-3 object-cover rounded-full" />
       <div className="flex flex-col justify-between">
         <span className="text-sm font-semibold">{`${firstname} ${lastname}`}</span>
         <p className="mb-1 leading-5 text-xs text-linkedin-gray">{description}</p>

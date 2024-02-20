@@ -1,10 +1,7 @@
 const { Schema } = require("mongoose");
-const multer = require("multer");
 const bcrypt = require("bcrypt");
-const path = require("path");
 const fs = require("fs");
 const BaseModel = require("./base-model");
-const logger = require("../log/winston");
 
 class UserModel extends BaseModel {
   constructor() {
@@ -28,35 +25,33 @@ class UserModel extends BaseModel {
   }
 
   async getAllUsers() {
-    const data = await this.model.find({}).lean();
+    const DESIRED_FIELDS = "_id firstname lastname email description profile url";
+    
+    const users = await this.model
+      .find()
+      .select(DESIRED_FIELDS)
+      .lean();
 
-    return data.map((user) => ({
-      id: user._id.toString(),
-      firstname: user.firstname,
-      lastname:user.lastname,
-      email: user.email,
-      description: user.description,
-      profile: user.profile,
-      url: user.url,
-    }));
+    return users;
   }
 
   async getSuggestedUsers(userId) {
     // All users except the one requesting the suggested users.
     // Future refactor: All users except the one requesting and those following already.
+    // Considerar abstracción de DB, haciendo métodos de igual nombre y funcionalidad, para cada DB.
+    // El usar find, select, limit, lean, hacen el programa más dependiente de la BD.
+    // O retornar un objeto modificado con los fields obtenidos, o que se encarguen esos metodos abstractos.
     const query = { _id: { $ne: userId } };
     const limit = 3;
-    const data = await this.model.find(query).limit(limit).lean();
+    const DESIRED_FIELDS = "_id firstname lastname description profile url";
 
-    return data.map((user) => ({
-      id: user._id.toString(),
-      firstname: user.firstname,
-      lastname:user.lastname,
-      email: user.email,
-      description: user.description,
-      profile: user.profile,
-      url: user.url,
-    }));
+    const users = await this.model
+      .find(query)
+      .select(DESIRED_FIELDS)
+      .limit(limit)
+      .lean();
+
+    return users;
   }
 
   async saveUser(user) {
@@ -70,105 +65,60 @@ class UserModel extends BaseModel {
   }
 
   async getUserByEmail(email) {
-    const user = await this.model.findOne({ email }).lean();
-    
-    if (!user) {
-      return null;
-    }
-    
-    return {
-      id: user._id,
-      firstname: user.firstname,
-      lastname: user.lastname,
-      name: `${user.firstname} ${user.lastname}`,
-      email: user.email,
-    };
+    const DESIRED_FIELDS = "_id firstname lastname email";
+    const QUERY_ID = { email };
+
+    const user = await this.model.findOne(QUERY_ID, DESIRED_FIELDS).lean();
+
+    return user;
   }
 
   async getUserByUrl(url) {
-    const user = await this.model.findOne({ url }).lean();
-    
-    if (!user) {
-      return null;
-    }
-    
-    return {
-      id: user._id,
-      firstname: user.firstname,
-      lastname: user.lastname,
-      name: `${user.firstname} ${user.lastname}`,
-      email: user.email,
-      url: user.url,
-    };
+    const DESIRED_FIELDS = "_id firstname lastname email url";
+    const QUERY_ID = { url };
+
+    const user = await this.model.findOne(QUERY_ID, DESIRED_FIELDS).lean();
+
+    return user;
   }
 
   async isPasswordValid(email, password) {
-    const user = await this.model.findOne({ email }).lean(); // Destructur password from the model and send directly to compare.
+    const DESIRED_FIELDS = "password";
+    const QUERY_ID = { email };
 
-    return await bcrypt.compare(password, user.password);
+    const { password: hashedPassword } = await this.model
+      .findOne(QUERY_ID, DESIRED_FIELDS)
+      .lean();
+
+    return await bcrypt.compare(password, hashedPassword);
   }
 
-  async updateProfilePicture(req, res) {
-    const MIMETYPES = ["image/jpeg", "image/pdf", "image/png"];
+  async updateProfilePicture(req) {
+    const defaultProfilePic = "/assets/defaultProfilePic.png";
+    const userId = req.user._id;
+    const identifier = { _id: userId };
+    const property = { $set: { profile: `/assets/${req.file.filename}` } };
 
-    const diskStorageConfig = {
-      destination: (req, file, cb) => {
-        cb(null, "../server/assets");
-      },
-      filename: (req, file, cb) => {
-        const fileExtension = path.extname(file.originalname);
-        cb(null, `${Date.now()}${fileExtension}`);
-      },
+    const user = await this.findById(userId);
+    const userProfilePath = user.profile;
+
+    if (userProfilePath !== defaultProfilePic && fs.existsSync(`../server${userProfilePath}`)) {
+      fs.unlinkSync(`../server${userProfilePath}`);
     }
 
-    const checkMimetypes = (req, file, cb) => {
-      const type_is_allowed = MIMETYPES.includes(file.mimetype);
-
-      if (type_is_allowed) {
-        cb(null, true);
-      } else {
-        cb(new Error(`Only ${MIMETYPES.join("")} are allowed.`));
-      }
-    }
-    
-    const multerUpload = multer({
-      storage: multer.diskStorage(diskStorageConfig),
-      fileFilter: checkMimetypes(),
-      limits: { fieldSize: 20000000 },
-    });
-
-    multerUpload.single("file")(req, res, async (err) => {
-      if (err instanceof multer.MulterError || err) {
-        logger.error(err);
-        return res.sendStatus(500);
-      }
-      
-      const defaultProfilePic = "/assets/defaultProfilePic.png";
-      const userId = req.user.id;
-      const identifier = { _id: userId };
-      const property = { $set: { profile: `/assets/${req.file.filename}` } };
-
-      const user = await this.findById(userId);
-      const userProfilePath = user.profile;
-
-      if (userProfilePath !== defaultProfilePic && fs.existsSync(`../server${userProfilePath}`)) {
-        fs.unlinkSync(`../server${userProfilePath}`);
-      }
-
-      await this.model.findOneAndUpdate(identifier, property);
-    });
+    return await this.model.findOneAndUpdate(identifier, property);
   }
 
   async getPublicUserInfo(id) {
-    const excludePassword = { password: 0 }
-    const user = await this.model.findById(id, excludePassword);
-      
-    if (!user) {
-      return null;
-    }
+    const EXCLUDED_FIELDS = "-password";
+    const user = await this.model.findById(id, EXCLUDED_FIELDS).lean();
 
     return user;
   }
 }
 
 module.exports = new UserModel();
+
+// Model should ask only for fileds of user we actually need. 
+// El modelo deberia solicitar al DB solo los fields necesarios. Ya que si se hace abstracción de DB,
+// debería existir un modelo que sin importar la DB utilizada, solicite a su manera, los fields solicistados en el model.

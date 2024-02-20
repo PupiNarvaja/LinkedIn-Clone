@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import usePostRequest from "../../customHooks/usePostRequest";
 
 const UpdateProfilePicture = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [uploading, setUploading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState(null);
 
   const handleFileSelect = (event) => {
     setSelectedFile(event.target.files[0]);
@@ -13,34 +15,35 @@ const UpdateProfilePicture = () => {
     setSelectedFile(event.dataTransfer.files[0]);
   };
 
-  const handleFileUpload = () => {
+  const handleFileUpload = async () => {
+    setErrorMsg(null);
+
     if (selectedFile && !uploading) {
       setUploading(true);
 
       const formData = new FormData();
       formData.append('file', selectedFile);
 
-      fetch('/api/users/profilePicture', {
-        method: 'POST',
-        body: formData,
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          // Manejar la respuesta del servidor
-          console.log(data);
-        })
-        .catch((error) => {
-          // Manejar errores
-          console.error(error);
-        })
-        .finally(() => {
-          setUploading(false);
-        });
+      const { data, error, status } = await usePostRequest("http://localhost:8080/api/users/profilePicture", formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+
+      if (error) {
+        setErrorMsg(error);
+      }
+
+      setUploading(false);
+    }
+
+    if (!selectedFile) {
+      setErrorMsg("Please, select a file.")
     }
   };
 
   return (
-    <div>
+    <form enctype="multipart/form-data">
       <input type="file" name="file" onChange={handleFileSelect} />
       <div
         onDrop={handleFileDrop}
@@ -54,10 +57,13 @@ const UpdateProfilePicture = () => {
       >
         Arrastra y suelta un archivo aquí
       </div>
+      {errorMsg && (
+        <div>{errorMsg}</div>
+      )}
       <button onClick={handleFileUpload} disabled={!selectedFile || uploading}>
         {uploading ? 'Subiendo...' : 'Subir archivo'}
       </button>
-    </div>
+    </form>
   );
 };
 

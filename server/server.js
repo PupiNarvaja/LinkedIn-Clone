@@ -8,15 +8,15 @@ const globalErrorHandler = require("./middlewares/globalErrorHandler");
   const mongoose = require("mongoose");
   const mongoStore = require("connect-mongo");
   const cors = require("cors");
-  //const compression = require("compression");
-  // Usar Helmet
   const passport = require("passport");
   const path = require("path");
-
+  //const compression = require("compression");
+  // Usar Helmet
+  
   const app = express();
-  const initializePassport = require("./passport/local");
-
+  
   const logger = require("./log");
+  const initializePassport = require("./passport/local");
 
   // Routes import
   const universalRouter = require("./routers/universal-router");
@@ -88,7 +88,7 @@ const globalErrorHandler = require("./middlewares/globalErrorHandler");
 
     app.listen(PORT, () => logger.info(`🚀 Server online. Running on port: ${PORT}`));
   } catch (error) {
-    logger.error("Error on MongoDB.", error);
+    logger.error("Error on Database connection.", error);
   }
 })();
 
@@ -97,5 +97,6 @@ const globalErrorHandler = require("./middlewares/globalErrorHandler");
 // llega error cannot destructure property "id" of "req.user"
 // as it is undefined.
 
-// Aveces al recargar, no se por qué, _id react lo toma como null.
-// Quizas se renderiza un componente precipitadamente.
+// Futuras ideas: Independizar react. Que el server solo envíe info, no HTML.
+// Abstraer los métodos de los modelos, para poder swapear DBs sin problema.
+// Rediseñar sistema de logueo y registro. (LUEGO de separar front y back.) Nota: interceptar las requests del cliente con custom hook.

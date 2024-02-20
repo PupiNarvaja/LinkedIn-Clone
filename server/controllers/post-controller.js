@@ -11,7 +11,7 @@ const getPosts = asyncErrorHandler(async (req, res, next) => {
 
 const postPost = asyncErrorHandler(async (req, res, next) => {
   const post = req.body;
-  const { id } = req.user;
+  const { _id: id } = req.user;
 
   const data = await postModel.postPost(post, id);
 
@@ -20,7 +20,7 @@ const postPost = asyncErrorHandler(async (req, res, next) => {
 
 const likeAPost = asyncErrorHandler(async (req, res, next) => {
   const { postId } = req.body;
-  const { id } = req.user;
+  const { _id: id } = req.user;
 
   const like = await postModel.likeAPost(id, postId);
 
@@ -29,7 +29,7 @@ const likeAPost = asyncErrorHandler(async (req, res, next) => {
 
 const unlikeAPost = asyncErrorHandler(async (req, res, next) => {
   const { postId } = req.body;
-  const { id } = req.user;
+  const { _id: id } = req.user;
 
   const unlike = await postModel.unlikeAPost(id, postId);
 

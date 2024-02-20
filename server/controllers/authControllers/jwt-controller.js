@@ -8,7 +8,7 @@ const userModel = ModelFactory.getModel("user");
 
 const generateTokenAndRedirect = asyncErrorHandler(async (req, res, next) => {
   const token = generateToken(req.user);
-  const { id } = req.user;
+  const { _id: id } = req.user;
 
   const user = await userModel.getPublicUserInfo(id);
 

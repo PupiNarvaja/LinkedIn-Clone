@@ -1,9 +1,9 @@
 import FeedSuggestionOption from "../FeedSuggestionOption/FeedSuggestionOption";
 
 const FeedSuggestionOptionList = ({ suggestedUsers }) => {
-  return suggestedUsers.map(({ id, profile, firstname, lastname, description }) => (
+  return suggestedUsers.map(({ _id, profile, firstname, lastname, description }) => (
     <FeedSuggestionOption
-      key={id}
+      key={_id}
       profile={profile}
       firstname={firstname}
       lastname={lastname}

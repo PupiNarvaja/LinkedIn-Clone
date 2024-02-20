@@ -51,6 +51,7 @@ class PostModel extends BaseModel {
     .populate(commentsProperties)
     .populate(likesProperties)
     .sort(sort)
+    .lean();
 
     return posts;
   }

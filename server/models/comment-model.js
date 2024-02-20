@@ -22,16 +22,16 @@ class CommentModel extends BaseModel {
       content,
       postId,
       timestamp: Date.now(),
-    }
+    };
 
     return await this.model.create(comment);
   }
-  
+
   // Helps other methods.
   async updatePostWithComment(postId, commentId) {
     const filter = { _id: postId };
-    const update = { $push: { comments: commentId }};
-  
+    const update = { $push: { comments: commentId } };
+
     return await postModel.findOneAndUpdate(filter, update);
   }
 
@@ -42,10 +42,13 @@ class CommentModel extends BaseModel {
 
     const authorProperties = {
       path: "author",
-      select: "firstname lastname profile description url"
-    }
+      select: "firstname lastname profile description url",
+    };
 
-    const newComment = await this.model.findById(comment._id).populate(authorProperties);
+    const newComment = await this.model
+      .findById(comment._id)
+      .populate(authorProperties)
+      .lean();
 
     return newComment;
   }

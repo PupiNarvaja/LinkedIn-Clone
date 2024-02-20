@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux'
 import { characterLimitReached, invalidContentDisablesButton } from "../../utils/postValidation";
-import { dateFormater } from "../../utils/dateFormater";
 import usePostRequest from "../../customHooks/usePostRequest";
 import CommentsList from "../Comment/CommentsList";
 import InputComment from "../Comment/InputComment";
 import BtnReaction from "./BtnReaction";
 import PostButton from "../Buttons/PostButton";
+import PostHeader from '../PostHeader/PostHeader';
 import LimitCharacterSpan from "../LimitCharacterSpan/LimitCharacterSpan";
 import Loader from "../../utils/loader/Loader";
 import LikesCounter from "../LikesCounter/LikesCounter";
@@ -72,26 +72,12 @@ const Post = ({ postId, profile, author, description, content, comments, likes, 
 
   return (
     <div className="w-full mb-2 px-4 py-3 pb-1 linkedin-border">
-      <header className="w-full mb-2 flex justify-between items-center">
-        <div className="flex">
-          <img
-            src={profile}
-            alt={author}
-            className="w-12 h-12 object-cover rounded-full"
-          />
-          <div className="ml-2 flex flex-col">
-            <h2 className="text-sm font-semibold">{author}</h2>
-            <p className="text-xs text-linkedin-gray">{description}</p>
-            <span className="text-xs text-linkedin-gray">
-              {dateFormater(timestamp)}
-            </span>
-          </div>
-        </div>
-        <button className="h-8 px-2 pb-1 text-blue-500 font-semibold rounded hover:bg-blue-100 duration-150">
-          <strong className="text-xl">+</strong>
-          Follow
-        </button>
-      </header>
+      <PostHeader
+        profile={profile}
+        author={author}
+        description={description}
+        timestamp={timestamp}
+      />
       <p className="text-sm break-words whitespace-pre-line">{content}</p>
       <div className="flex justify-around">
         <BtnReaction
