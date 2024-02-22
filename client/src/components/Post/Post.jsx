@@ -73,6 +73,7 @@ const Post = ({ postId, profile, author, description, content, comments, likes, 
   return (
     <div className="w-full mb-2 px-4 py-3 pb-1 linkedin-border">
       <PostHeader
+        postId={postId}
         profile={profile}
         author={author}
         description={description}

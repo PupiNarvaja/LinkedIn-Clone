@@ -11,4 +11,6 @@ router.route("/").get(postController.getPosts)
 router.route("/like").post(postController.likeAPost)
                      .delete(postController.unlikeAPost);
 
+router.route("/delete/:id").delete(postController.deletePost);
+
 module.exports = router;

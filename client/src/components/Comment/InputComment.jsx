@@ -18,8 +18,8 @@ const InputComment = ({ profile, author, value, onChange }) => {
         className="w-10 h-10 object-cover rounded-full shrink-0"
       />
       <textarea
-        //name=""
-        //id=""
+        name="comment"
+        id="comment"
         placeholder="Add a comment..."
         className="w-full h-[40px] p-2 pl-4 ml-2 flex bg-white rounded-[20px] border border-gray-400 outline-none resize-none overflow-y-hidden"
         value={value}

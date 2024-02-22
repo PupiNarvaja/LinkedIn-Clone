@@ -20,7 +20,7 @@ module.exports = (req, res, next) => {
     return res.redirect("/login");
   }
   
-  logger.info("Valid token!");
+  //logger.info("Valid token!");
 
   next();
 };

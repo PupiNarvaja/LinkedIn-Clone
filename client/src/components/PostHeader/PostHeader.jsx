@@ -1,7 +1,8 @@
 import React from "react";
+import PostOptionsBtn from "../PostOptionsBtn/PostOptionsBtn";
 import { dateFormater } from "../../utils/dateFormater";
 
-const PostHeader = ({ profile, author, description, timestamp }) => {
+const PostHeader = ({ postId, profile, author, description, timestamp }) => {
   return (
     <header className="w-full mb-2 flex justify-between items-center">
       <div className="flex">
@@ -18,12 +19,25 @@ const PostHeader = ({ profile, author, description, timestamp }) => {
           </span>
         </div>
       </div>
-      <button className="h-8 px-2 pb-1 text-blue-500 font-semibold rounded hover:bg-blue-100 duration-150">
-        <strong className="text-xl">+</strong>
-        Follow
-      </button>
+      <div className="flex flex-col items-end">
+        <PostOptionsBtn postId={postId} />
+        <button className="h-8 px-2 pb-1 text-blue-500 font-semibold rounded hover:bg-blue-100 duration-150">
+          <strong className="text-xl">+</strong>
+          Follow
+        </button>
+      </div>
     </header>
   );
 };
 
 export default PostHeader;
+
+
+// Eliminar post -> Boton de front junto a delete req
+// Eliminar post -> Implica eliminar todos sus comentarios.
+// Considerar _> user con array de posts likeados.
+// Eliminar comentario -> Implica eliminarlo de su post.
+// TODO esto solo si el user actual == author.
+
+// Opcional -> Opcion de reportar si user != author. Que me llegue un mail o algo.
+// Si ya lo sigo o si soy yo, no aparecer boton de follow.

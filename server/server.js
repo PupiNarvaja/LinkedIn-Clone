@@ -100,3 +100,15 @@ const globalErrorHandler = require("./middlewares/globalErrorHandler");
 // Futuras ideas: Independizar react. Que el server solo envíe info, no HTML.
 // Abstraer los métodos de los modelos, para poder swapear DBs sin problema.
 // Rediseñar sistema de logueo y registro. (LUEGO de separar front y back.) Nota: interceptar las requests del cliente con custom hook.
+
+
+// Notas:
+// Al usar SINGLETON para las instancias de modelo, junto con el factory y el pub/sub logramos:
+// Utilizar una unica instancia de modelos (SINGLETON).
+// Centralizar la creación y exportación de instancias en un lugar (FACTORY).
+// Notificar a los demas modelos necesarios que hubo determinado cambio por el cuál deben realizar acciones. (PUB/SUB).
+
+// A revisar:
+// Inyeccion de dependencias.
+// Patron repository.
+// Arquitectura hexagonal.

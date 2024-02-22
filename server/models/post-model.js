@@ -66,6 +66,17 @@ class PostModel extends BaseModel {
     return await this.model.create(postInfo);
   }
 
+  async deletePost(postId) {
+    return await this.model.findOneAndDelete(postId);
+  }
+  
+  async updatePostWithComment(postId, commentId) {
+    const filter = { _id: postId };
+    const update = { $push: { comments: commentId } };
+
+    return await this.model.findOneAndUpdate(filter, update);
+  }
+
   async likeAPost(userId, postId) {
     const update = { $push: { likes: userId }};
 

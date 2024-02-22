@@ -21,6 +21,8 @@ const Header = () => {
               className="p-2"
             />
             <input
+            name="search"
+            id="search"
             type="text"
             placeholder="Search"
             className="w-full text-sm outline-none border-none bg-none bg-[#eef3f8]" />
