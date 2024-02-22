@@ -25,6 +25,13 @@ class CommentModel extends BaseModel {
     return await this.model.create(comment);
   }
 
+  async deleteComment(commentId) {
+    const filter = { _id: commentId }
+    const deleted = await this.model.findOneAndDelete(filter);
+
+    return deleted;
+  }
+
   async getPopulatedComment(commentId) {
     const authorProperties = {
       path: "author",

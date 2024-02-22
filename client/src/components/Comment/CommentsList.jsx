@@ -5,6 +5,7 @@ const CommentsList = ({ comments }) => {
   return comments.map(({ _id, author, content, timestamp }) => (
     <Comment
       key={_id}
+      commentId={_id}
       author={author}
       content={content}
       timestamp={timestamp}

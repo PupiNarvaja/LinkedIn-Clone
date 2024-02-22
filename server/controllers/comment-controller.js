@@ -17,6 +17,22 @@ const postComment = asyncErrorHandler(async (req, res, next) => {
   res.status(201).send(populatedComment);
 });
 
+const deleteComment =  asyncErrorHandler(async (req, res, next) => {
+  const commentId = req.params.id;
+  const { _id: id } = req.user;
+
+  const comment = await commentModel.findById(commentId);
+
+  if (comment.author.toString() !== id) {
+    return res.status(403).send("Unauthorized"); //Maybe userModel.isUserAuthor(userId, postId.author)
+  }
+
+  await commentModel.deleteComment(commentId); // Si hay comments de comments o like a comments, habrá que revisar.
+
+  return res.sendStatus(204);
+});
+
 module.exports = {
   postComment,
+  deleteComment,
 };

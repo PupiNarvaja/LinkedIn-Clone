@@ -67,7 +67,8 @@ class PostModel extends BaseModel {
   }
 
   async deletePost(postId) {
-    return await this.model.findOneAndDelete(postId);
+    const filter = { _id: postId }
+    return await this.model.findOneAndDelete(filter);
   }
   
   async updatePostWithComment(postId, commentId) {

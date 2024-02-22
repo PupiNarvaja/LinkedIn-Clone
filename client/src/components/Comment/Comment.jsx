@@ -1,7 +1,18 @@
-import React from "react";
+import React, { useState } from 'react';
+import useDeleteRequest from '../../customHooks/useDeleteRequest';
 import { dateFormater } from "../../utils/dateFormater";
 
-const Comment = ({ author, content, timestamp }) => {
+const Comment = ({ commentId, author, content, timestamp }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleOpenOptions = () => {
+    setIsOpen(!isOpen);
+  }
+
+  const deleteComment = async () => {
+    await useDeleteRequest(`http://localhost:8080/api/comments/delete/${commentId}`);
+  }
+
   return (
     <div className="w-full my-2 flex justify-between items-start gap-1">
       <img
@@ -18,6 +29,22 @@ const Comment = ({ author, content, timestamp }) => {
           <span className="text-xs text-linkedin-gray">
             {dateFormater(timestamp)}
           </span>
+          <div>
+            <button onClick={handleOpenOptions}>
+              ...
+            </button>
+            {isOpen &&
+              <div className="p-3 relative flex flex-col gap-2 top-2 border rounded-xl border-linkedin-red bg-white">
+                <div className="relative">
+                  <button
+                    className="py-2 px-3 text-linkedin-red border rounded-xl border-linkedin-red bg-white"
+                    onClick={deleteComment}
+                  >
+                    Delete Comment 
+                  </button>
+                </div>
+              </div>}
+          </div>
         </div>
         <p className="text-sm break-words whitespace-pre-line">{content}</p>
       </div>

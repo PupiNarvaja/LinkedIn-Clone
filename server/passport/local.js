@@ -2,6 +2,7 @@ const LocalStrategy = require("passport-local").Strategy;
 // const mailSender = require("../notifications/mail");
 const ModelFactory = require("../models/model-factory");
 const logger = require("../log");
+
 const userModel = ModelFactory.getModel("user");
 
 module.exports = (passport) => {
