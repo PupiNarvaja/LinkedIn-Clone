@@ -24,11 +24,13 @@ const UpdateProfilePicture = () => {
       const formData = new FormData();
       formData.append('file', selectedFile);
 
-      const { data, error, status } = await usePostRequest("http://localhost:8080/api/users/profilePicture", formData, {
+      const config = {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
-      });
+      }
+
+      const { data, error, status } = await usePostRequest("http://localhost:8080/api/users/profilePicture", formData, config);
 
       if (error) {
         setErrorMsg(error);

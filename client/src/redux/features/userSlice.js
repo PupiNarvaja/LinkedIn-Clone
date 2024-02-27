@@ -1,23 +1,19 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-export const userSlice = createSlice({
+const initialState = {
+  user: null,
+}
+
+export const counterSlice = createSlice({
   name: "user",
-  initialState: {
-    user: null,
-  },
+  initialState,
   reducers: {
-    login: (state, action) => {
+    setUser: (state, action) => {
       state.user = action.payload;
     },
-    logout: (state) => {
-      state.user = null;
-    },
-  },
+  }
 });
 
-export const { login, logout } = userSlice.actions;
+export const { setUser } = counterSlice.actions;
 
-// Selectors: They pull the user info to the component calling it.
-export const selectUser = (state) => state.user.user; 
-
-export default userSlice.reducer;
+export default counterSlice.reducer;

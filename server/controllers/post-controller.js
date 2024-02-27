@@ -14,9 +14,11 @@ const postPost = asyncErrorHandler(async (req, res, next) => {
   const post = req.body;
   const { _id: id } = req.user;
 
-  const data = await postModel.postPost(post, id);
+  const comment = await postModel.postPost(post, id);
 
-  res.status(201).send(data);
+  const commentWithAuthor = await postModel.populateAuthor(comment._id);
+
+  res.status(201).send(commentWithAuthor);
 });
 
 const deletePost = asyncErrorHandler(async (req, res) => {

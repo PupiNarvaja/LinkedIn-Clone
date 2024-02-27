@@ -1,10 +1,8 @@
 import { useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 import RegisterInput from "./RegisterInput";
-import { useSelector, useDispatch } from "react-redux";
-import axios from "axios";
 import Logo from "../../assets/Logo-Linkedin.png";
-import { userActions } from "../../redux/actions/user-actions";
+import usePostRequest from "../../customHooks/usePostRequest";
 
 const Register = () => {
   const [firstname, setFirstname] = useState("");
@@ -15,7 +13,7 @@ const Register = () => {
   const [description, setDescription] = useState("");
   const [address, setAddress] = useState("");
   const [phone, setPhone] = useState(null);
-  const [profile, setProfile] = useState("");
+  const [profile, setProfile] = useState("/assets/defaultProfilePic.png");
 
   const [showPassword, setShowPassword] = useState(false);
   const [redirect, setRedirect] = useState(false);
@@ -26,11 +24,6 @@ const Register = () => {
 
   const handleRegister = async (e) => {
     e.preventDefault();
-
-    // const dispatch = useDispatch();
-    // const user = useSelector((state) => state.userReducer.user);
-
-    // dispatch(userActions.formSubmittionStatus(true));
 
     const userData = {
       email,
@@ -45,17 +38,17 @@ const Register = () => {
     };
     const config = { headers: { "content-type": "application/json" } };
 
-    try {
-      const res = await axios.post("http://localhost:8080/register", userData, config);
-      console.log(res.data);      //  Debo recibir al usuario y su info. Deshabilitar botones y eso. SE REPITE EN LOGIN. REFACTORIZAR.
-      setRedirect(true);
-    } catch (error) {
-      console.log(error);
+    const { data, error, status } = await usePostRequest("http://localhost:8080/register", userData, config);
+
+    if (error) {
+      return alert(`Error: ${error}`);
     }
+
+    setRedirect(true);
   };
 
   if (redirect) {
-    return <Navigate replace to="/feed" />; //Chequear si anda o es inutil.
+    return <Navigate replace to="/feed" />;
   }
 
   return (
@@ -83,7 +76,7 @@ const Register = () => {
           <RegisterInput label="description" value={description} type="text" setter={setDescription} />
           <RegisterInput label="address" value={address} type="text" setter={setAddress} />
           <RegisterInput label="phone" value={phone} type="tel" setter={setPhone} />
-          <RegisterInput label="profile" value={profile} type="text" setter={setProfile} />
+          {/* <RegisterInput label="profile" value={profile} type="text" setter={setProfile} /> */}
           <span className="my-4 text-xs text-linkedin-gray text-center">By clicking "Accept & Join", you agree to LinkedIn 's <font className="text-linkedin-blue font-semibold cursor-pointer hover:underline">Terms of Use</font> , <font className="text-linkedin-blue font-semibold cursor-pointer hover:underline">Privacy</font> Policy, and <font className="text-linkedin-blue font-semibold cursor-pointer hover:underline">Cookie Policy</font> .</span>
           <button
             className="h-12 px-4 rounded-3xl text-white bg-linkedin-blue transition-all duration-[167m] ease-out hover:bg-linkedin-darkblue"
@@ -105,3 +98,4 @@ export default Register;
 
 
 // Mensajes de error, borde rojo. Validacion de campos.
+// Profile temporalmente desactivado. Valor por defecto -> imagen default.

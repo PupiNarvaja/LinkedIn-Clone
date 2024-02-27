@@ -1,8 +1,8 @@
 import Header from "../Header/Header";
-import SideBar from "../SideBar";
+import SideBar from "../SideBar/SideBar";
 import Feed from "../Feed/Feed";
 import Widgets from "../Widgets/Widgets";
-import useSetUser from "../../customHooks/useSetUser";
+import useSetUser from "../../customHooks/redux-hooks/useSetUser";
 
 const MainContent = () => {
 

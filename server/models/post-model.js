@@ -23,6 +23,14 @@ class PostModel extends BaseModel {
     return like;
   }
 
+  // Only helps other methods.
+  async isUserPostAuthor(userId, postId) {
+    const post = await this.model.findById(postId);
+    const isPostAuthor = post.author._id.toString() === userId.toString();
+
+    return isPostAuthor;
+  }
+
   async getPosts() {
     const sort = { timestamp: -1 };
     
@@ -33,7 +41,7 @@ class PostModel extends BaseModel {
 
     const commentsProperties = {
       path: "comments",
-      select: "author content timestamp",
+      select: "author content timestamp postId",
       populate: {
         path: "author",
         select: "firstname lastname profile description url"
@@ -76,6 +84,17 @@ class PostModel extends BaseModel {
     const update = { $push: { comments: commentId } };
 
     return await this.model.findOneAndUpdate(filter, update);
+  }
+
+  async populateAuthor(postId) {
+    const authorProperties = {
+      path: "author",
+      select: "firstname lastname profile description url",
+    };
+
+    return await this.model.
+      findById(postId)
+      .populate(authorProperties);
   }
 
   async likeAPost(userId, postId) {

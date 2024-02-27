@@ -1,25 +1,26 @@
-import useFetch from "../../customHooks/useFetch";
-import Conditional from "../../utils/Conditional";
-import Loader from "../../utils/loader/Loader";
-import NewPost from "../NewPost/NewPost";
+import React from 'react';
+import Loader from "../Loader/Loader";
+import NewPost from "../Posts/NewPost/NewPost";
 import FeedError from "./FeedError";
-import FeedList from "./FeedList";
+import PostsList from "../Posts/PostsList";
+import { useSelector } from 'react-redux';
+import useGetAndDispatchPosts from '../../customHooks/redux-hooks/useGetAndDispatchPosts';
 
 const Feed = () => {
-  const { data: posts, isLoading, error } = useFetch("http://localhost:8080/api/posts", []);
-  
-// Usar Grid
+  const { isLoading, error } = useGetAndDispatchPosts();
+  const posts = useSelector(state => state.posts.posts);
+
   return (
     <main className="mx-6 flex-[0.5]">
       <NewPost />
       <button className="w-full h-4 my-2">
         <hr className="w-full border-linkedin-lightgray"></hr>
       </button>
-      <Conditional props={[
-        isLoading, <div className="mt-8"><Loader /></div>,
-        error, <FeedError error={error} />,
-        posts, <FeedList posts={posts} />]}
-      />
+
+      { isLoading && <div className="mt-8"><Loader /></div> }
+      { error && <FeedError error={error} /> }
+      { posts && !error && <PostsList posts={posts} /> }
+
     </main>
   );
 };

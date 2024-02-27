@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import HeaderAvatar from "./HeaderAvatar";
 
 const Header = () => {
-  const user = useSelector((state) => state.userReducer.user);
+  const user = useSelector((state) => state.user.user);
 
   return (
     <header className="w-full h-[53px] sticky top-0 border-b-[0.1px] bg-white border-gray-200 z-9">

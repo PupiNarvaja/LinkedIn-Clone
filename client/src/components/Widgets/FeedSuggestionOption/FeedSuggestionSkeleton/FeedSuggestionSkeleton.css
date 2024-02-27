@@ -1,0 +1,30 @@
+.skeleton-profile {
+  width: 60px; /* Ancho del perfil */
+  height: 60px; /* Altura del perfil */
+  border-radius: 50%; /* Forma redondeada */
+  background-color: #ccc; /* Color de fondo gris */
+}
+
+/* Estilos para el nombre del skeleton */
+.skeleton-name {
+  width: 120px; /* Ancho del nombre */
+  height: 20px; /* Altura del nombre */
+  background-color: #ccc; /* Color de fondo gris */
+}
+
+/* Estilos para la descripción del skeleton */
+.skeleton-description {
+  width: 240px; /* Ancho de la descripción */
+  height: 15px; /* Altura de la descripción */
+  background-color: #ccc; /* Color de fondo gris */
+}
+
+/* Estilos para el botón del skeleton */
+.skeleton-button {
+  width: 60px; /* Ancho del botón */
+  height: 30px; /* Altura del botón */
+  border-radius: 15px; /* Bordes redondeados */
+  background-color: #ccc; /* Color de fondo gris */
+  border: 1px solid #ccc; /* Borde gris */
+  color: #ccc; /* Color de texto gris */
+}
